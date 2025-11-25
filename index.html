@@ -1,426 +1,782 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New2Future RECORDS | OFFICIAL SITE</title>
+    <title>Now2Future RECORDS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles for the manga aesthetic and animations */
+        /* Apple-esque Typography & Base */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #121212;
-            color: #f0f0f0;
-            overflow-x: hidden;
+            font-family: "SF Pro Display", "SF Pro Icons", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #f5f5f7; /* Apple's light grey background */
+            color: #1d1d1f;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* SVG color customization */
-        .svg-light {
-            filter: brightness(0) invert(1);
+        /* Utilities */
+        .glass-nav {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
         }
 
-        /* Smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
+        .apple-container {
+            max-width: 980px; /* Classic Apple content width */
+            margin: 0 auto;
         }
 
-        /* Header Carousel Styles */
-        .carousel-slide {
-            transition: opacity 1s ease-in-out;
-            position: absolute;
-            width: 100%;
-            height: 100%;
+        /* SVG coloring logic */
+        .nav-logo {
+            filter: brightness(0); /* Make black */
+            transition: opacity 0.3s;
+        }
+        .nav-logo:hover {
+            opacity: 0.7;
+        }
+        
+        .footer-logo {
+            filter: invert(1); /* Make white for dark footer */
+            transition: filter 0.3s ease, opacity 0.3s ease;
+        }
+        .footer-logo:hover {
+            opacity: 0.8;
+            filter: invert(0.8) sepia(1) saturate(5) hue-rotate(180deg); /* Subtle color shift on hover */
         }
 
-        /* Slogan Animation Styles */
-        .slogan-reveal {
+        /* Animations */
+        .fade-in-up {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.165, 0.84, 0.44, 1), transform 1s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
-        .slogan-reveal.visible {
+        .fade-in-up.visible {
             opacity: 1;
             transform: translateY(0);
         }
-        .slogan-highlight {
-            color: #00ffff;
-            font-weight: 900;
-            text-shadow: 0 0 8px #00ffff, 0 0 12px #00ffff;
-        }
 
-        /* Section Reveal Animation */
-        .section-fade-in {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .section-fade-in.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Manga-style borders and panels */
-        .manga-panel {
-            border: 2px solid #f0f0f0;
-            background-color: #1a1a1a;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .manga-panel:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 255, 255, 0.1);
-        }
-        
-        /* Custom scrollbar */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 0px;
+            background: transparent;
         }
-        ::-webkit-scrollbar-track {
-            background: #121212;
+
+        /* Project Card Hover */
+        .project-card {
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #00ffff;
-            border-radius: 4px;
+        .project-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00cccc;
+
+        /* Link Underline Animation */
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #1d1d1f;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Track List Styling */
+        .track-list-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Button Styles from Attachment */
+        .btn-glass-white {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .btn-glass-white:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-prominent-blue {
+            background-color: #0071e3;
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-prominent-blue:hover {
+            background-color: #0077ed;
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
         }
     </style>
 </head>
-<body class="antialiased">
+<body>
 
-    <!-- 1. Navigation Bar -->
-    <nav id="navbar" class="sticky top-0 z-50 bg-black transition-all duration-300 shadow-lg shadow-cyan-500/10">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#home">
-                <img src="assets/images/logo.svg" alt="New2Future Records Logo" class="h-8 w-auto svg-light">
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-50 top-0 border-b border-gray-200/50">
+        <div class="apple-container px-6 h-12 flex justify-between items-center text-xs tracking-wide">
+            <a href="#home" class="opacity-90 hover:opacity-100 transition-opacity">
+                <img src="https://records.btm-m.site/assets/images/logo.svg" alt="Now2Future" class="h-4 w-auto nav-logo">
             </a>
-            <div class="hidden md:flex items-center space-x-8 text-sm font-bold tracking-wider">
-                <a href="#home" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">HOME</a>
-                <a href="#news" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">NEWS</a>
-                <a href="#works" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">WORKS</a>
-                <a href="#creators" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">CREATORS</a>
-                <a href="#publishing" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">PUBLISHING</a>
-                <a href="#contact" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">CONTACT</a>
-                <a href="#about" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">ABOUT</a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 text-gray-700 font-normal">
+                <a href="#news" class="hover:text-black transition-colors nav-link">NEWS</a>
+                <a href="#projects" class="hover:text-black transition-colors nav-link">PROJECTS</a>
+                <a href="#creators" class="hover:text-black transition-colors nav-link">CREATORS</a>
+                <a href="#publishing" class="hover:text-black transition-colors nav-link">PUBLISHING</a>
+                <a href="#about" class="hover:text-black transition-colors nav-link">ABOUT</a>
+                <a href="#contact" class="hover:text-black transition-colors nav-link">CONTACT</a>
             </div>
+
             <!-- Mobile Menu Button -->
-            <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-cyan-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            <button id="mobile-menu-btn" class="md:hidden text-gray-800">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 flex flex-col space-y-4 text-sm font-bold tracking-wider">
-            <a href="#home" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">HOME</a>
-            <a href="#news" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">NEWS</a>
-            <a href="#works" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">WORKS</a>
-            <a href="#creators" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">CREATORS</a>
-            <a href="#publishing" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">PUBLISHING</a>
-            <a href="#contact" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">CONTACT</a>
-            <a href="#about" class="text-gray-300 hover:text-cyan-400 transition-colors duration-300">ABOUT</a>
+        
+        <!-- Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-xl absolute w-full border-b border-gray-200">
+            <div class="px-6 py-4 flex flex-col space-y-4 text-sm text-gray-800">
+                <a href="#news" class="block">NEWS</a>
+                <a href="#projects" class="block">PROJECTS</a>
+                <a href="#creators" class="block">CREATORS</a>
+                <a href="#publishing" class="block">PUBLISHING</a>
+                <a href="#about" class="block">ABOUT</a>
+                <a href="#contact" class="block">CONTACT</a>
+            </div>
         </div>
     </nav>
 
-    <main>
-        <!-- 2. Header Carousel -->
-        <header id="home" class="relative w-full aspect-[16/9] max-h-[calc(100vh-56px)] overflow-hidden bg-black">
-            <div id="carousel-container" class="w-full h-full">
-                <!-- Slides will be injected here by JavaScript -->
+    <main class="pt-12">
+        <!-- Hero Section -->
+        <header id="home" class="relative w-full h-[90vh] md:h-screen overflow-hidden flex items-center justify-center bg-black">
+             <!-- Slideshow -->
+             <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-100 hero-slide" data-index="0">
+                <img src="https://records.btm-m.site/assets/images/10thProj.png" class="w-full h-full object-cover opacity-80" alt="Hero 1">
             </div>
-            <div id="carousel-indicators" class="absolute bottom-4 right-4 flex items-center space-x-2">
-                <!-- Indicators will be injected here by JavaScript -->
+            <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0 hero-slide" data-index="1">
+                <img src="https://records.btm-m.site/assets/images/10thTOUR.png" class="w-full h-full object-cover opacity-80" alt="Hero 2">
+            </div>
+            <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0 hero-slide" data-index="2">
+                <img src="https://records.btm-m.site/assets/images/VLIVE2025.png" class="w-full h-full object-cover opacity-80" alt="Hero 3">
+            </div>
+
+            <!-- Hero Text -->
+            <div class="relative z-10 text-center text-white px-4">
+                <h1 class="text-5xl md:text-8xl font-bold tracking-tight mb-4">
+                    Recording the "Now"
+                </h1>
+                <h2 class="text-3xl md:text-5xl font-medium tracking-tight text-gray-200">
+                    Releasing the "Future"
+                </h2>
+                <!-- Updated Buttons -->
+                <div class="mt-8 flex justify-center gap-4">
+                   <a href="#projects" class="btn-glass-white text-black px-8 py-3 rounded-full font-medium text-base md:text-lg">Learn more</a>
+                   <a href="#contact" class="border border-white/80 bg-black/20 backdrop-blur-sm text-white px-8 py-3 rounded-full font-medium hover:bg-white/10 transition text-base md:text-lg">Contact Us</a>
+                </div>
             </div>
         </header>
 
-        <!-- 3. Slogan -->
-        <section id="slogan" class="container mx-auto text-center py-20 md:py-32 px-6">
-            <h2 class="text-3xl md:text-5xl font-black leading-tight tracking-wider">
-                <span class="slogan-reveal">Recording the "</span><span class="slogan-reveal slogan-highlight" style="transition-delay: 0.5s;">Now</span><span class="slogan-reveal">"</span><br>
-                <span class="slogan-reveal" style="transition-delay: 0.2s;">Releasing the "</span><span class="slogan-reveal slogan-highlight" style="transition-delay: 0.7s;">Future</span><span class="slogan-reveal" style="transition-delay: 0.2s;">"</span>
-            </h2>
-        </section>
-
-        <!-- 4. NEWS -->
-        <section id="news" class="py-20 bg-black/20">
-            <div class="container mx-auto px-6">
-                <h2 class="section-fade-in text-4xl font-black text-center mb-12 tracking-widest">NEWS</h2>
-                <div class="space-y-8 max-w-3xl mx-auto">
-                    <div class="section-fade-in manga-panel p-6 rounded-lg">
-                        <p class="text-sm text-cyan-400 mb-2">2025.08.15</p>
-                        <h3 class="text-xl font-bold">KAMI ON TV 「See You Again」Music Video Available Now</h3>
-                    </div>
-                    <div class="section-fade-in manga-panel p-6 rounded-lg" style="transition-delay: 0.2s;">
-                        <p class="text-sm text-cyan-400 mb-2">2025.08.01</p>
-                        <h3 class="text-xl font-bold">0M_P 10th ANNIVERSARY PROJECT「Re : WiND」Has Been Announced</h3>
-                    </div>
-                    <div class="section-fade-in manga-panel p-6 rounded-lg" style="transition-delay: 0.4s;">
-                        <p class="text-sm text-cyan-400 mb-2">2025.07.29</p>
-                        <h3 class="text-xl font-bold">0M_P Successfully Wraps Up WORLD TOUR 2025「FLOWERS」</h3>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Placeholder for WORKS section -->
-        <section id="works" class="py-20">
-            <div class="container mx-auto px-6 text-center">
-                 <h2 class="section-fade-in text-4xl font-black text-center mb-12 tracking-widest">WORKS</h2>
-                 <p class="section-fade-in text-gray-400">Our latest works will be showcased here soon.</p>
-            </div>
-        </section>
-
-        <!-- 5. CREATORS -->
-        <section id="creators" class="py-20 bg-black/20">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="section-fade-in text-4xl font-black mb-12 tracking-widest">CREATORS</h2>
-                <div class="section-fade-in flex flex-wrap justify-center items-center gap-12">
-                    <div class="text-center group">
-                        <img src="assets/images/0M_avatar.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/121212/00ffff?text=0M_P';" alt="0M_P Avatar" class="w-36 h-36 rounded-full object-cover mx-auto border-4 border-gray-700 group-hover:border-cyan-400 transition-all duration-300 transform group-hover:scale-110">
-                        <p class="mt-4 font-bold text-lg">0M_P</p>
-                    </div>
-                    <div class="text-center group">
-                        <img src="assets/images/KAMIONTV_avatar.png" onerror="this.onerror=null;this.src='https://placehold.co/150x150/121212/00ffff?text=KAMI+ON+TV';" alt="KAMI ON TV Avatar" class="w-36 h-36 rounded-full object-cover mx-auto border-4 border-gray-700 group-hover:border-cyan-400 transition-all duration-300 transform group-hover:scale-110">
-                        <p class="mt-4 font-bold text-lg">KAMI ON TV</p>
-                    </div>
-                    <div class="text-center">
-                        <p class="text-2xl font-black text-gray-500">and more...</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. PUBLISHING SERVICE -->
-        <section id="publishing" class="py-20">
-            <div class="container mx-auto px-6 text-center">
-                <h2 class="section-fade-in text-4xl font-black mb-12 tracking-widest">PUBLISHING SERVICE</h2>
-                <div class="section-fade-in max-w-3xl mx-auto flex flex-col md:flex-row items-center gap-8 manga-panel p-8 rounded-lg">
-                    <img src="assets/images/UMG.svg" alt="Universal Music Group Logo" class="h-16 w-auto svg-light">
-                    <p class="text-lg text-gray-300 text-center md:text-left">
-                        Distribute your music worldwide through the distribution services offered by Universal Music Group.
-                    </p>
+        <!-- News Ticker Style -->
+        <section id="news" class="py-24 bg-white">
+            <div class="apple-container px-6">
+                <h2 class="text-4xl md:text-5xl font-semibold mb-16 tracking-tight text-center">Latest News</h2>
+                <div class="space-y-0 border-t border-gray-200">
+                    <article class="group flex flex-col md:flex-row gap-4 md:gap-12 py-8 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors px-4">
+                        <span class="text-sm font-semibold text-gray-400 w-32 pt-1">2025.11.24</span>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-medium group-hover:text-blue-600 transition-colors">0M_P DOME TOUR 2026 "thoughts" Has Been Announced!</h3>
+                            <span class="inline-block mt-2 text-xs font-bold text-white bg-black px-2 py-0.5 rounded-full">INFO</span>
+                        </div>
+                        <span class="hidden md:block text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                    </article>
+                    <article class="group flex flex-col md:flex-row gap-4 md:gap-12 py-8 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors px-4">
+                        <span class="text-sm font-semibold text-gray-400 w-32 pt-1">2025.11.22</span>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-medium group-hover:text-blue-600 transition-colors">KAMI ON TV 2nd Album "i Will Know U" 2025.12.31 Release</h3>
+                            <span class="inline-block mt-2 text-xs font-bold text-white bg-blue-600 px-2 py-0.5 rounded-full">RELEASE</span>
+                        </div>
+                        <span class="hidden md:block text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                    </article>
+                    <article class="group flex flex-col md:flex-row gap-4 md:gap-12 py-8 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors px-4">
+                        <span class="text-sm font-semibold text-gray-400 w-32 pt-1">2025.10.31</span>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-medium group-hover:text-blue-600 transition-colors">0M_P feat. Taylor Swift「α2β」Music Video Available Now</h3>
+                            <span class="inline-block mt-2 text-xs font-bold text-white bg-blue-600 px-2 py-0.5 rounded-full">RELEASE</span>
+                        </div>
+                        <span class="hidden md:block text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                    </article>
+                    <article class="group flex flex-col md:flex-row gap-4 md:gap-12 py-8 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors px-4">
+                        <span class="text-sm font-semibold text-gray-400 w-32 pt-1">2025.10.24</span>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-medium group-hover:text-blue-600 transition-colors">0M_P COUNTDOWN TOUR 2025-2026 "NEW DAYS" Has Been Announced!</h3>
+                            <span class="inline-block mt-2 text-xs font-bold text-white bg-black px-2 py-0.5 rounded-full">INFO</span>
+                        </div>
+                        <span class="hidden md:block text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                    </article>
+                    <article class="group flex flex-col md:flex-row gap-4 md:gap-12 py-8 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors px-4">
+                        <span class="text-sm font-semibold text-gray-400 w-32 pt-1">2025.10.19</span>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-medium group-hover:text-blue-600 transition-colors">0M_P x NHK SPECIAL TV MUSIC FES. "HALO!!!" 2025.11.1 Hold</h3>
+                            <span class="inline-block mt-2 text-xs font-bold text-white bg-gray-600 px-2 py-0.5 rounded-full">LIVE</span>
+                        </div>
+                        <span class="hidden md:block text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                    </article>
+                    <article class="group flex flex-col md:flex-row gap-4 md:gap-12 py-8 border-b border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors px-4">
+                        <span class="text-sm font-semibold text-gray-400 w-32 pt-1">2025.10.19</span>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-medium group-hover:text-blue-600 transition-colors">0M_P's Birthday Special Streaming on YouTube</h3>
+                            <span class="inline-block mt-2 text-xs font-bold text-white bg-red-600 px-2 py-0.5 rounded-full">MEDIA</span>
+                        </div>
+                        <span class="hidden md:block text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                    </article>
                 </div>
             </div>
         </section>
 
-        <!-- 7. ABOUT -->
-        <section id="about" class="py-20 bg-black/20">
-            <div class="container mx-auto px-6">
-                <h2 class="section-fade-in text-4xl font-black text-center mb-12 tracking-widest">ABOUT</h2>
-                <div class="section-fade-in max-w-4xl mx-auto manga-panel p-8 rounded-lg flex flex-col md:flex-row gap-8 items-center">
-                    <div class="flex-shrink-0 text-center md:text-left">
-                        <img src="assets/images/logo.svg" alt="New2Future Records Logo" class="h-12 w-auto mx-auto md:mx-0 svg-light">
-                        <p class="mt-2 text-gray-400 font-bold">A UNIVERSAL COMPANY</p>
-                    </div>
-                    <div class="border-t-2 md:border-t-0 md:border-l-2 border-gray-700 pt-6 md:pt-0 md:pl-8 w-full">
-                        <ul class="space-y-3 text-gray-300">
-                            <li><strong>Founded:</strong> July 2025</li>
-                            <li><strong>Location:</strong> Tokyo, Japan</li>
-                            <li><strong>Capital:</strong> ¥80,000,000</li>
-                            <li><strong>Representative Director:</strong> Miyamoto Saito</li>
-                            <li><strong>CEO:</strong> Andy Melville</li>
-                            <li><strong>Business:</strong> Record Production & Distribution, Music/Animation/Video/Design Production, Music Publishing Services</li>
-                        </ul>
-                    </div>
+        <!-- Projects Section (Updated Layout & Content) -->
+        <section id="projects" class="py-24 bg-[#f5f5f7]">
+            <div class="apple-container px-6">
+                <h2 class="text-4xl md:text-5xl font-semibold mb-12 tracking-tight">Projects.</h2>
+                
+                <!-- Grid Layout similar to Apple Product Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Project 1 (Full Width) -->
+                    <a href="https://tour.btm-m.site/NewDays" target="_blank" class="project-card md:col-span-2 relative group overflow-hidden rounded-[30px] bg-white aspect-[21/9] flex items-end">
+                        <img src="https://records.btm-m.site/assets/images/NewDays.png" alt="New Days Tour" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="relative z-10 p-8 md:p-12 w-full bg-gradient-to-t from-black/80 to-transparent">
+                            <h3 class="text-white text-sm font-bold tracking-wider uppercase mb-1">Countdown Tour</h3>
+                            <p class="text-white text-2xl md:text-4xl font-bold">0M_P COUNTDOWN TOUR 2025-2026 "NEW DAYS"</p>
+                        </div>
+                    </a>
+
+                    <!-- Project 2 -->
+                    <a href="https://tour.btm-m.site/dome26" target="_blank" class="project-card relative group overflow-hidden rounded-[30px] bg-white aspect-square md:aspect-[4/3] flex items-end">
+                        <img src="https://records.btm-m.site/assets/images/DOME26.png" alt="Dome Tour 26" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="relative z-10 p-8 w-full bg-gradient-to-t from-black/60 to-transparent">
+                            <h3 class="text-white text-xs font-bold tracking-wider uppercase mb-1">Dome Tour</h3>
+                            <p class="text-white text-xl md:text-3xl font-bold">0M_P DOME TOUR 2026 "thoughts"</p>
+                        </div>
+                    </a>
+
+                    <!-- Project 3 -->
+                    <a href="https://kmontv.jp/tour2026" target="_blank" class="project-card relative group overflow-hidden rounded-[30px] bg-white aspect-square md:aspect-[4/3] flex items-end">
+                        <img src="https://records.btm-m.site/assets/images/KAMIONTV.png" alt="KAMI ON TV" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="relative z-10 p-8 w-full bg-gradient-to-t from-black/60 to-transparent">
+                            <h3 class="text-white text-xs font-bold tracking-wider uppercase mb-1">Live Tour</h3>
+                            <p class="text-white text-xl md:text-3xl font-bold">KAMI ON TV LIVE TOUR 2026 "LOVE NO SEKAI"</p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </section>
 
-        <!-- 8. CONTACT -->
-        <section id="contact" class="py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="section-fade-in text-4xl font-black text-center mb-12 tracking-widest">CONTACT</h2>
-                <div class="section-fade-in max-w-2xl mx-auto manga-panel p-8 rounded-lg">
-                    <form id="contact-form" class="space-y-6">
-                        <div>
-                            <label for="inquiry-type" class="block text-sm font-bold text-gray-300 mb-2">Inquiry Type</label>
-                            <select id="inquiry-type" name="inquiry-type" class="w-full bg-gray-800 border-2 border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:border-cyan-400 transition-colors">
-                                <option>1. Music Production</option>
-                                <option>2. Music Publishing</option>
-                                <option>3. Record Distribution</option>
-                                <option>4. Animation & Design Production</option>
-                                <option>5. Other</option>
-                            </select>
+        <!-- Creators Section -->
+        <section id="creators" class="py-24 bg-white">
+            <div class="apple-container px-6 text-center">
+                <h2 class="text-4xl md:text-5xl font-semibold mb-16 tracking-tight">Creators.</h2>
+                <div class="flex flex-wrap justify-center gap-12 md:gap-24">
+                    <div class="group cursor-pointer">
+                        <div class="w-40 h-40 md:w-56 md:h-56 rounded-full overflow-hidden shadow-lg mx-auto mb-6 transform transition duration-500 group-hover:scale-105">
+                            <img src="https://records.btm-m.site/assets/images/0M_avatar.png" alt="0M_P" class="w-full h-full object-cover">
                         </div>
-                        <div>
-                            <label for="subject" class="block text-sm font-bold text-gray-300 mb-2">* Subject</label>
-                            <input type="text" id="subject" name="subject" required class="w-full bg-gray-800 border-2 border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:border-cyan-400 transition-colors">
+                        <h3 class="text-2xl font-bold">0M_P</h3>
+                        <p class="text-gray-500 mt-2">Composer / Producer</p>
+                    </div>
+                    <div class="group cursor-pointer">
+                        <div class="w-40 h-40 md:w-56 md:h-56 rounded-full overflow-hidden shadow-lg mx-auto mb-6 transform transition duration-500 group-hover:scale-105">
+                            <img src="https://records.btm-m.site/assets/images/KAMIONTV_avatar.png" alt="KAMI ON TV" class="w-full h-full object-cover">
                         </div>
-                        <div>
-                            <label for="name" class="block text-sm font-bold text-gray-300 mb-2">* Name</label>
-                            <input type="text" id="name" name="name" required class="w-full bg-gray-800 border-2 border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:border-cyan-400 transition-colors">
-                        </div>
-                        <div>
-                            <label for="company" class="block text-sm font-bold text-gray-300 mb-2">Company Name</label>
-                            <input type="text" id="company" name="company" class="w-full bg-gray-800 border-2 border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:border-cyan-400 transition-colors">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-sm font-bold text-gray-300 mb-2">* Email</label>
-                            <input type="email" id="email" name="email" required class="w-full bg-gray-800 border-2 border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:border-cyan-400 transition-colors">
-                        </div>
-                        <div>
-                            <label for="message" class="block text-sm font-bold text-gray-300 mb-2">* Inquiry</label>
-                            <textarea id="message" name="message" rows="5" required class="w-full bg-gray-800 border-2 border-gray-600 rounded-md px-4 py-2 focus:outline-none focus:border-cyan-400 transition-colors"></textarea>
-                        </div>
-                        <button type="submit" class="w-full bg-cyan-500 text-black font-bold py-3 px-6 rounded-md hover:bg-cyan-400 transition-all duration-300 transform hover:scale-105">
-                            SEND MAIL
-                        </button>
-                    </form>
-                    <p class="text-center mt-8 text-gray-400">
-                        E-MAIL : <a href="mailto:N2F.RE@umg-mail.com" class="hover:text-cyan-400">N2F.RE@umg-mail.com</a>
-                    </p>
+                        <h3 class="text-2xl font-bold">KAMI ON TV</h3>
+                        <p class="text-gray-500 mt-2">Visual & Sound Unit</p>
+                    </div>
+                </div>
+                <div class="mt-16">
+                    <a href="#" class="text-blue-600 hover:underline text-lg">View all creators ›</a>
                 </div>
             </div>
         </section>
 
+        <!-- Publishing Service -->
+        <section id="publishing" class="py-24 bg-black text-white relative overflow-hidden">
+            <div class="apple-container px-6 relative z-10 text-center">
+                <a href="https://www.universal-music.co.jp/" target="_blank" class="inline-block hover:opacity-80 transition-opacity">
+                    <img src="https://records.btm-m.site/assets/images/UMG.svg" alt="UMG" class="h-16 mx-auto mb-8 invert">
+                </a>
+                <h2 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight">Global Distribution.</h2>
+                <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12">
+                    Distribute your music worldwide through the premium services offered by Universal Music Group.
+                </p>
+                <!-- Updated Button -->
+                <button id="open-player-btn" class="btn-glass-white text-black px-10 py-4 rounded-full font-semibold text-lg">
+                    View Release Examples
+                </button>
+            </div>
+        </section>
+
+        <!-- About & Contact Grid -->
+        <section id="contact" class="py-24 bg-[#f5f5f7]">
+            <div class="apple-container px-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- About Box -->
+                    <div class="bg-white p-10 rounded-[30px] shadow-sm">
+                        <h3 class="text-3xl font-bold mb-8">About Us</h3>
+                        <div class="space-y-4 text-sm text-gray-600">
+                            <div class="flex border-b border-gray-100 pb-2">
+                                <span class="w-32 font-semibold text-black">Company</span>
+                                <span>Now2Future RECORDS</span>
+                            </div>
+                            <div class="flex border-b border-gray-100 pb-2">
+                                <span class="w-32 font-semibold text-black">Founded</span>
+                                <span>July 2025</span>
+                            </div>
+                            <div class="flex border-b border-gray-100 pb-2">
+                                <span class="w-32 font-semibold text-black">Location</span>
+                                <span>Tokyo, Japan</span>
+                            </div>
+                            <div class="flex border-b border-gray-100 pb-2">
+                                <span class="w-32 font-semibold text-black">CEO</span>
+                                <span>Andy Melville</span>
+                            </div>
+                            <div class="mt-4 pt-4">
+                                <p>A UNIVERSAL COMPANY.</p>
+                                <p class="mt-2">Record production, Music publishing, Animation & Design production.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form Box -->
+                    <div class="bg-white p-10 rounded-[30px] shadow-sm">
+                        <h3 class="text-3xl font-bold mb-8">Contact</h3>
+                        <form id="contact-form" class="space-y-4">
+                            <div>
+                                <select id="inquiry_type" class="w-full p-3 bg-gray-50 border-none rounded-xl text-gray-700 focus:ring-2 focus:ring-blue-500 outline-none">
+                                    <option>Music Production</option>
+                                    <option>Music Publishing</option>
+                                    <option>Record Distribution</option>
+                                    <option>Animation & Design</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="text" id="name" placeholder="Name" class="w-full p-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                                <input type="email" id="email" placeholder="Email" class="w-full p-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                            <input type="text" id="company_name" placeholder="Company (Optional)" class="w-full p-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                            <textarea id="inquiry_content" rows="4" placeholder="Your Message" class="w-full p-3 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                            
+                            <!-- Updated Button -->
+                            <button type="submit" id="send-btn" class="w-full btn-prominent-blue text-white font-semibold py-4 rounded-full text-lg mt-2">Send Message</button>
+                        </form>
+                        <p class="text-xs text-center text-gray-400 mt-4">N2F.RE@umg-mail.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- 9. Copyright -->
-    <footer class="py-10 bg-black">
-        <div class="container mx-auto px-6 text-center text-gray-500 flex flex-col items-center gap-4">
-            <img src="assets/images/UMG.svg" alt="Universal Music Group Logo" class="h-8 w-auto svg-light">
-            <p>© 2025 New2Future RECORDS All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="bg-[#1d1d1f] text-[#f5f5f7] py-12 text-xs">
+        <div class="apple-container px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <img src="https://records.btm-m.site/assets/images/logo.svg" alt="Footer Logo" class="h-6 w-auto footer-logo mb-2">
+                    <p class="text-gray-400">© 2025 Now2Future RECORDS All rights reserved.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" data-modal-type="privacy" class="footer-link text-gray-400 hover:text-white transition">Privacy Policy</a>
+                    <a href="#" data-modal-type="terms" class="footer-link text-gray-400 hover:text-white transition">Terms of Use</a>
+                    <a href="#" data-modal-type="sitemap" class="footer-link text-gray-400 hover:text-white transition">Site Map</a>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-4 text-gray-500">
+                <p>Now2Future RECORDS is a division of Universal Music LLC.</p>
+            </div>
         </div>
     </footer>
 
+    <!-- Cookies Consent Banner -->
+    <div id="cookie-banner" class="fixed bottom-0 left-0 right-0 z-[100] transform translate-y-full transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)]">
+        <div class="apple-container p-4 md:p-6 pb-6 md:pb-8">
+            <div class="bg-white/90 backdrop-blur-xl rounded-[20px] shadow-2xl p-6 md:flex items-center justify-between border border-gray-200/50">
+                <div class="text-sm text-gray-700 mb-4 md:mb-0 md:mr-8 font-medium">
+                    <p>We use cookies to improve your experience and analyze site traffic. By continuing to browse, you agree to our use of cookies.</p>
+                </div>
+                <div class="flex space-x-3 shrink-0 items-center">
+                    <button id="cookie-settings" class="text-blue-600 hover:underline text-xs font-semibold px-2">Settings</button>
+                    <!-- Updated Button -->
+                    <button id="cookie-accept" class="btn-prominent-blue text-white px-8 py-2 rounded-full text-sm font-medium">Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Player Modal (Music) -->
+    <div id="music-modal" class="fixed inset-0 z-[60] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-md" id="modal-backdrop"></div>
+        
+        <!-- Modal Content -->
+        <div class="relative bg-white md:rounded-[20px] w-full h-full md:h-auto md:max-w-4xl md:aspect-[16/9] shadow-2xl overflow-hidden flex flex-col md:flex-row">
+            
+            <!-- Close Button -->
+            <button id="close-modal" class="absolute top-4 right-4 z-20 bg-gray-200/50 hover:bg-gray-200 rounded-full p-2 transition">
+                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <!-- Left: Album Art -->
+            <div class="w-full md:w-1/2 bg-gray-100 p-8 flex items-center justify-center relative overflow-hidden">
+                 <!-- Background blur effect for art -->
+                 <div id="art-bg-blur" class="absolute inset-0 bg-cover bg-center opacity-30 blur-xl scale-110 transition-all duration-500"></div>
+                 
+                 <div class="relative z-10 w-64 h-64 md:w-80 md:h-80 shadow-2xl rounded-lg overflow-hidden">
+                    <img id="modal-art" src="" alt="Album Art" class="w-full h-full object-cover">
+                 </div>
+
+                 <!-- Switch Button (Bottom Left) -->
+                 <!-- Updated Button -->
+                 <button id="switch-example-btn" class="absolute bottom-6 left-6 z-20 flex items-center space-x-2 btn-glass-white text-black px-6 py-3 rounded-full text-sm font-semibold">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    <span>Switch Release</span>
+                 </button>
+            </div>
+
+            <!-- Right: Details & Tracks -->
+            <div class="w-full md:w-1/2 p-8 flex flex-col bg-white overflow-y-auto">
+                <div class="mb-6">
+                    <h2 id="modal-title" class="text-3xl font-bold text-black mb-1 leading-tight"></h2>
+                    <p id="modal-artist" class="text-xl text-red-500 font-medium"></p>
+                    <p id="modal-meta" class="text-xs text-gray-500 mt-2 uppercase tracking-wide font-semibold"></p>
+                </div>
+
+                <div class="flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                    <div id="track-list" class="space-y-0 text-sm">
+                        <!-- Tracks injected here -->
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-gray-100 text-[10px] text-gray-400 leading-relaxed" id="modal-copyright">
+                    <!-- Copyright info -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generic Info Modal (Privacy, Terms, Sitemap) -->
+    <div id="info-modal" class="fixed inset-0 z-[70] flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-md" id="info-backdrop"></div>
+        
+        <!-- Modal Card -->
+        <div class="relative bg-white rounded-2xl w-full max-w-2xl max-h-[80vh] shadow-2xl overflow-hidden flex flex-col m-4 transform transition-all scale-95" id="info-modal-card">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white z-10 sticky top-0">
+                <h3 id="info-title" class="text-2xl font-bold text-black tracking-tight"></h3>
+                <button id="close-info" class="text-gray-500 hover:text-black transition p-1 bg-gray-100 rounded-full">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-8 overflow-y-auto text-gray-700 text-sm leading-relaxed space-y-4" id="info-content">
+                <!-- Content injected here -->
+            </div>
+        </div>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- Carousel Logic ---
-            const carouselContainer = document.getElementById('carousel-container');
-            const indicatorsContainer = document.getElementById('carousel-indicators');
-            const images = [
-                'assets/images/10thProj.png',
-                'assets/images/10thTOUR.png',
-                'assets/images/VLIVE2025.png',
-                'assets/images/KAMIONTV.png'
-            ];
-            let currentSlide = 0;
+        // Data for the music modal
+        const releases = [
+            {
+                artist: "tuki.",
+                title: "ギルティ - Guilty",
+                image: "https://records.btm-m.site/assets/images/guilty.jpg",
+                meta: "SINGLE",
+                date: "July 30, 2025, 3 minutes",
+                copyright: "a Now2Future RECORDS release ; ℗ 2025 The Lunar Landing Plan",
+                tracks: ["ギルティ - Guilty"]
+            },
+            {
+                artist: "Vaundy",
+                title: "偉生人",
+                image: "https://records.btm-m.site/assets/images/vaundy.jpg",
+                meta: "SINGLE",
+                date: "October 29, 2025, 3 minutes",
+                copyright: "a Now2Future RECORDS release ; ℗ 2025 SDR Inc.",
+                tracks: ["偉生人"]
+            },
+            {
+                artist: "Twinfield",
+                title: "夏に透明",
+                image: "https://records.btm-m.site/assets/images/tf.jpg",
+                meta: "EP",
+                date: "February 12, 2025, 2025, 3 minutes",
+                copyright: "a Now2Future RECORDS release ; ℗ 2025 Twinfield",
+                tracks: [
+                    "夏に透明 - Original Mix - (feat. 初音ミク)",
+                    "夏に透明 - EasyPop Remix - (feat. 初音ミク)",
+                    "夏に透明 - emon(Tes.) Remix - (feat. 初音ミク)",
+                    "夏に透明 - namigroove Remix - (feat. 初音ミク)",
+                    "夏に透明 - Piano Ver. - (feat. 初音ミク)"
+                ]
+            }
+        ];
 
-            // Create slides and indicators
-            images.forEach((src, index) => {
-                // Slide
-                const slide = document.createElement('div');
-                slide.className = 'carousel-slide';
-                slide.style.opacity = index === 0 ? '1' : '0';
-                const img = document.createElement('img');
-                img.src = src;
-                img.onerror = () => { img.src = `https://placehold.co/1920x1080/121212/FFFFFF?text=Image+${index+1}` };
-                img.alt = `Slide ${index + 1}`;
-                img.className = 'w-full h-full object-contain'; // Changed from object-cover to object-contain
-                slide.appendChild(img);
-                carouselContainer.appendChild(slide);
+        // Content for Info Modal
+        const infoContentData = {
+            privacy: {
+                title: "Privacy Policy",
+                body: `
+                    <p class="font-bold text-black mb-2">1. Introduction</p>
+                    <p>Now2Future RECORDS ("we", "our", "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you visit our website.</p>
+                    
+                    <p class="font-bold text-black mt-4 mb-2">2. Information Collection</p>
+                    <p>We collect information you provide directly to us, such as when you fill out a contact form, including your name, email address, and company details. We also automatically collect usage data via cookies to improve site performance.</p>
 
-                // Indicator
-                const indicator = document.createElement('div');
-                indicator.className = 'cursor-pointer transition-all duration-500';
-                if (index === 0) {
-                    indicator.classList.add('bg-cyan-400', 'w-6', 'h-2', 'rounded-full');
-                } else {
-                    indicator.classList.add('bg-gray-500', 'w-2', 'h-2', 'rounded-full');
-                }
-                indicator.addEventListener('click', () => {
-                    goToSlide(index);
-                });
-                indicatorsContainer.appendChild(indicator);
+                    <p class="font-bold text-black mt-4 mb-2">3. Use of Information</p>
+                    <p>Your information is used to respond to your inquiries, improve our services, and communicate with you about our projects. We do not sell your personal data to third parties.</p>
+
+                    <p class="font-bold text-black mt-4 mb-2">4. Data Security</p>
+                    <p>We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, or destruction.</p>
+
+                    <p class="font-bold text-black mt-4 mb-2">5. Contact Us</p>
+                    <p>If you have any questions about this Privacy Policy, please contact us at N2F.RE@umg-mail.com.</p>
+                `
+            },
+            terms: {
+                title: "Terms of Use",
+                body: `
+                    <p class="font-bold text-black mb-2">1. Acceptance of Terms</p>
+                    <p>By accessing and using the Now2Future RECORDS website, you agree to be bound by these Terms of Use. If you do not agree, please do not use this site.</p>
+
+                    <p class="font-bold text-black mt-4 mb-2">2. Intellectual Property</p>
+                    <p>All content on this website, including but not limited to music, text, graphics, logos, images, and software, is the property of Now2Future RECORDS or its content suppliers and is protected by international copyright laws.</p>
+
+                    <p class="font-bold text-black mt-4 mb-2">3. License and Access</p>
+                    <p>We grant you a limited license to access and make personal use of this site. You may not download (other than page caching) or modify any portion of it without our express written consent.</p>
+
+                    <p class="font-bold text-black mt-4 mb-2">4. Limitation of Liability</p>
+                    <p>Now2Future RECORDS will not be liable for any damages of any kind arising from the use of this site, including but not limited to direct, indirect, incidental, punitive, and consequential damages.</p>
+
+                    <p class="font-bold text-black mt-4 mb-2">5. Governing Law</p>
+                    <p>These terms shall be governed by and construed in accordance with the laws of Japan, without regard to its conflict of law provisions.</p>
+                `
+            },
+            sitemap: {
+                title: "Site Map",
+                body: `
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="font-bold text-black mb-2 border-b border-gray-200 pb-1">Main Sections</p>
+                            <ul class="space-y-2">
+                                <li><a href="#home" class="hover:text-blue-600 transition">Home</a></li>
+                                <li><a href="#news" class="hover:text-blue-600 transition">News</a></li>
+                                <li><a href="#projects" class="hover:text-blue-600 transition">Projects</a></li>
+                                <li><a href="#creators" class="hover:text-blue-600 transition">Creators</a></li>
+                                <li><a href="#publishing" class="hover:text-blue-600 transition">Publishing Service</a></li>
+                                <li><a href="#contact" class="hover:text-blue-600 transition">About & Contact</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                             <p class="font-bold text-black mb-2 border-b border-gray-200 pb-1">External Links</p>
+                            <ul class="space-y-2">
+                                <li><a href="https://tour.btm-m.site/NewDays" target="_blank" class="hover:text-blue-600 transition">New Days Tour Site</a></li>
+                                <li><a href="https://tour.btm-m.site/dome26" target="_blank" class="hover:text-blue-600 transition">Dome Tour 2026 Site</a></li>
+                                <li><a href="https://kmontv.jp/tour2026" target="_blank" class="hover:text-blue-600 transition">Kami On TV Tour Site</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        let currentReleaseIndex = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
             });
 
-            const slides = carouselContainer.children;
-            const indicators = indicatorsContainer.children;
+            // Hero Slideshow
+            const slides = document.querySelectorAll('.hero-slide');
+            let currentSlide = 0;
+            setInterval(() => {
+                slides[currentSlide].style.opacity = '0';
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].style.opacity = '1';
+            }, 5000);
 
-            function goToSlide(slideIndex) {
-                if (slides[currentSlide]) {
-                    slides[currentSlide].style.opacity = '0';
-                }
-                if (indicators[currentSlide]) {
-                    indicators[currentSlide].classList.remove('bg-cyan-400', 'w-6');
-                    indicators[currentSlide].classList.add('bg-gray-500', 'w-2');
-                }
-
-                currentSlide = slideIndex;
-
-                if (slides[currentSlide]) {
-                    slides[currentSlide].style.opacity = '1';
-                }
-                if (indicators[currentSlide]) {
-                    indicators[currentSlide].classList.remove('bg-gray-500', 'w-2');
-                    indicators[currentSlide].classList.add('bg-cyan-400', 'w-6');
-                }
-            }
-
-            function nextSlide() {
-                let next = (currentSlide + 1) % images.length;
-                goToSlide(next);
-            }
-
-            setInterval(nextSlide, 5000); // Change slide every 5 seconds
-
-            // --- Scroll Animations ---
+            // Scroll Animation Observer
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
                     }
                 });
             }, { threshold: 0.1 });
 
-            document.querySelectorAll('.section-fade-in').forEach(el => {
-                observer.observe(el);
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.add('fade-in-up');
+                observer.observe(section);
             });
-            
-            // --- Slogan Animation ---
-            const sloganObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        document.querySelectorAll('.slogan-reveal').forEach(span => {
-                            span.classList.add('visible');
-                        });
-                        sloganObserver.unobserve(entry.target); // Animate only once
-                    }
+
+            // --- Music Modal Logic ---
+            const modal = document.getElementById('music-modal');
+            const openBtn = document.getElementById('open-player-btn');
+            const closeBtn = document.getElementById('close-modal');
+            const backdrop = document.getElementById('modal-backdrop');
+            const switchBtn = document.getElementById('switch-example-btn');
+
+            function updateModalContent() {
+                const data = releases[currentReleaseIndex];
+                document.getElementById('modal-title').textContent = data.title;
+                document.getElementById('modal-artist').textContent = data.artist;
+                document.getElementById('modal-meta').textContent = `${data.meta} • ${data.date}`;
+                document.getElementById('modal-copyright').textContent = data.copyright;
+                const artImg = document.getElementById('modal-art');
+                artImg.src = data.image;
+                const bgBlur = document.getElementById('art-bg-blur');
+                bgBlur.style.backgroundImage = `url('${data.image}')`;
+                const list = document.getElementById('track-list');
+                list.innerHTML = ''; 
+                data.tracks.forEach((track, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'track-list-item flex items-center py-3 border-b border-gray-100 hover:bg-gray-50 transition px-2 rounded';
+                    row.innerHTML = `
+                        <span class="w-8 text-gray-400 text-xs font-mono">${String(index + 1).padStart(2, '0')}</span>
+                        <span class="font-medium text-gray-800 truncate">${track}</span>
+                    `;
+                    list.appendChild(row);
                 });
-            }, { threshold: 0.5 });
-            
-            sloganObserver.observe(document.getElementById('slogan'));
-
-            // --- Contact Form Logic ---
-            const inquiryType = document.getElementById('inquiry-type');
-            const subjectField = document.getElementById('subject');
-            const contactForm = document.getElementById('contact-form');
-
-            function updateSubject() {
-                subjectField.value = inquiryType.value.split('. ')[1] || '';
             }
-            inquiryType.addEventListener('change', updateSubject);
-            updateSubject(); // Initial call
 
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const name = document.getElementById('name').value;
-                const company = document.getElementById('company').value;
-                const email = document.getElementById('email').value;
-                const message = document.getElementById('message').value;
-                const subject = subjectField.value;
+            function openModal() {
+                updateModalContent();
+                modal.classList.remove('pointer-events-none', 'opacity-0');
+                document.body.style.overflow = 'hidden'; 
+            }
 
-                let body = `Name: ${name}\n`;
-                if (company) {
-                    body += `Company: ${company}\n`;
+            function closeModal() {
+                modal.classList.add('pointer-events-none', 'opacity-0');
+                document.body.style.overflow = '';
+            }
+
+            openBtn.addEventListener('click', openModal);
+            closeBtn.addEventListener('click', closeModal);
+            backdrop.addEventListener('click', closeModal);
+
+            switchBtn.addEventListener('click', () => {
+                const container = document.querySelector('#music-modal .bg-white');
+                container.classList.add('opacity-50');
+                setTimeout(() => {
+                    currentReleaseIndex = (currentReleaseIndex + 1) % releases.length;
+                    updateModalContent();
+                    container.classList.remove('opacity-50');
+                }, 200);
+            });
+
+            // --- Info Modal Logic (Privacy, Terms, Sitemap) ---
+            const infoModal = document.getElementById('info-modal');
+            const infoModalCard = document.getElementById('info-modal-card');
+            const closeInfoBtn = document.getElementById('close-info');
+            const infoBackdrop = document.getElementById('info-backdrop');
+            const footerLinks = document.querySelectorAll('.footer-link');
+
+            function openInfoModal(type) {
+                const content = infoContentData[type];
+                if (!content) return;
+
+                document.getElementById('info-title').textContent = content.title;
+                document.getElementById('info-content').innerHTML = content.body;
+
+                infoModal.classList.remove('pointer-events-none', 'opacity-0');
+                infoModalCard.classList.remove('scale-95');
+                infoModalCard.classList.add('scale-100');
+                document.body.style.overflow = 'hidden'; 
+
+                // Attach click handler for sitemap links to close modal
+                if(type === 'sitemap') {
+                    const links = infoModal.querySelectorAll('a');
+                    links.forEach(link => {
+                        link.addEventListener('click', closeInfoModal);
+                    });
                 }
-                body += `Email: ${email}\n\n`;
-                body += `Inquiry:\n${message}`;
+            }
 
-                const mailtoLink = `mailto:N2F.RE@umg-mail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-                window.location.href = mailtoLink;
+            function closeInfoModal() {
+                infoModal.classList.add('pointer-events-none', 'opacity-0');
+                infoModalCard.classList.remove('scale-100');
+                infoModalCard.classList.add('scale-95');
+                document.body.style.overflow = '';
+            }
+
+            footerLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const type = link.getAttribute('data-modal-type');
+                    openInfoModal(type);
+                });
+            });
+
+            closeInfoBtn.addEventListener('click', closeInfoModal);
+            infoBackdrop.addEventListener('click', closeInfoModal);
+
+            // --- Cookie Banner Logic ---
+            const cookieBanner = document.getElementById('cookie-banner');
+            const cookieAcceptBtn = document.getElementById('cookie-accept');
+            const cookieSettingsBtn = document.getElementById('cookie-settings');
+
+            // Check if user already accepted
+            if (!localStorage.getItem('cookieConsent')) {
+                // Delay showing for smoother entry
+                setTimeout(() => {
+                    cookieBanner.classList.remove('translate-y-full');
+                }, 1500);
+            }
+
+            cookieAcceptBtn.addEventListener('click', () => {
+                localStorage.setItem('cookieConsent', 'true');
+                cookieBanner.classList.add('translate-y-full');
             });
             
-            // --- Mobile Menu ---
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+            cookieSettingsBtn.addEventListener('click', () => {
+                // Re-use info modal to show privacy policy as settings placeholder
+                openInfoModal('privacy');
             });
 
+            // Contact Form Logic
+            document.getElementById('send-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                const type = document.getElementById('inquiry_type').value;
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const company = document.getElementById('company_name').value;
+                const msg = document.getElementById('inquiry_content').value;
+
+                if(!name || !email || !msg) {
+                    alert('Please fill in the required fields.');
+                    return;
+                }
+
+                const body = `Type: ${type}\nName: ${name}\nCompany: ${company}\nEmail: ${email}\n\nMessage:\n${msg}`;
+                window.location.href = `mailto:N2F.RE@umg-mail.com?subject=${encodeURIComponent(type)}&body=${encodeURIComponent(body)}`;
+            });
         });
     </script>
-
 </body>
 </html>
