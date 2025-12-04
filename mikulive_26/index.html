@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Now2Future PRESENTS 初音ミク ONE-MAN LIVE "INFINIEY 2026"</title>
+    <meta name="description" content="Now2Future PRESENTS 初音ミク ONE-MAN LIVE 'INFINIEY 2026'. 0 to ∞.">
+    
+    <!-- Google Fonts: Inter (Closest free alternative to SF Pro) & Noto Sans JP -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration for Custom Colors and Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Inter"', '"Noto Sans JP"', 'sans-serif'],
+                    },
+                    colors: {
+                        miku: {
+                            DEFAULT: '#39C5BB', // Official Miku Green/Blue
+                            dark: '#2DA8A0',
+                            light: '#E0F7FA'
+                        },
+                        apple: {
+                            gray: '#F5F5F7',
+                            dark: '#1D1D1F',
+                            text: '#86868b'
+                        }
+                    },
+                    backgroundImage: {
+                        'hero-gradient': 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)',
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities for Glassmorphism and Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #ffffff;
+            color: #1d1d1f;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .section-fade {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .section-fade.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Typography Helpers */
+        .text-gradient {
+            background: linear-gradient(90deg, #1d1d1f 0%, #39C5BB 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Hero Image Adjustment */
+        .hero-bg-mask {
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+
+        /* Scrollbar style for modal content */
+        .modal-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        .modal-scroll::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+        .modal-scroll::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-14">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="font-bold text-xl tracking-tighter">0 to ∞</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#schedule" class="text-xs font-medium text-gray-600 hover:text-miku transition-colors">SCHEDULE</a>
+                    <a href="#ticket" class="text-xs font-medium text-gray-600 hover:text-miku transition-colors">TICKET</a>
+                    <a href="#special" class="text-xs font-medium text-gray-600 hover:text-miku transition-colors">SPECIAL</a>
+                    <a href="#about" class="text-xs font-medium text-gray-600 hover:text-miku transition-colors">ABOUT</a>
+                </div>
+                <div>
+                    <a href="#ticket" class="bg-black text-white text-xs px-4 py-1.5 rounded-full hover:bg-miku transition-colors duration-300">Get Tickets</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative w-full h-screen min-h-[800px] flex items-center justify-center overflow-hidden bg-black">
+        <!-- Hero BG -->
+        <div class="absolute inset-0 w-full h-full">
+            <img src="https://records.btm-m.site/mikulive_26/hero_bg.jpg" alt="Background" class="w-full h-full object-cover opacity-80">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-white"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 text-center flex flex-col items-center justify-center mt-20">
+            <!-- Logo -->
+            <img src="https://records.btm-m.site/mikulive_26/hero_logo.svg" alt="Logo" class="w-64 md:w-96 mb-6 animate-fade-in-up drop-shadow-lg filter brightness-0 invert">
+            
+            <p class="text-miku font-bold tracking-widest text-sm md:text-base uppercase mb-2 animate-fade-in-up" style="animation-delay: 0.2s;">
+                Now2Future PRESENTS
+            </p>
+            <h1 class="text-white text-3xl md:text-5xl font-bold tracking-tight mb-8 animate-fade-in-up leading-tight" style="animation-delay: 0.3s;">
+                初音ミク ONE-MAN LIVE<br>"INFINIEY 2026"
+            </h1>
+            
+            <!-- CTA -->
+            <div class="animate-fade-in-up" style="animation-delay: 0.5s;">
+                <a href="#schedule" class="text-miku hover:text-white transition-colors border border-miku hover:bg-miku/20 px-6 py-2 rounded-full text-sm backdrop-blur-sm">View Dates</a>
+            </div>
+        </div>
+
+        <!-- Hero Character -->
+        <div class="absolute bottom-0 z-20 w-full flex justify-center pointer-events-none">
+            <img src="https://records.btm-m.site/mikulive_26/hero_character.png" alt="Miku Hero" class="h-[60vh] md:h-[75vh] object-contain animate-float drop-shadow-2xl">
+        </div>
+    </section>
+
+    <!-- Theme Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-6 text-center section-fade">
+            <p class="text-miku font-semibold mb-4">The Theme</p>
+            <h2 class="text-5xl md:text-7xl font-bold text-gray-900 mb-6 tracking-tight">0 to ∞</h2>
+            <p class="text-xl md:text-2xl text-gray-500 font-light leading-relaxed mb-12">
+                From zero, the sound begins.<br>
+                Into infinity, the melody resonates.
+            </p>
+            
+            <div class="bg-apple-gray rounded-3xl p-8 md:p-12 inline-block w-full max-w-2xl mx-auto transform hover:scale-[1.01] transition-transform duration-500">
+                <div class="text-left">
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Theme Song</span>
+                    <h3 class="text-2xl md:text-3xl font-bold mt-2 mb-1">INFINITE MELODY</h3>
+                    <p class="text-gray-600">cosMo＠暴走P feat. 初音ミク</p>
+                    <div class="mt-6 border-t border-gray-200 pt-4">
+                        <p class="text-sm text-gray-500">Main Visual by <span class="text-gray-900 font-medium">San-Kyu-Illustrator</span> (from AxM Production)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section (Bento Grid) -->
+    <section id="schedule" class="py-24 bg-apple-gray">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-4xl md:text-5xl font-bold mb-16 text-center section-fade">Tour Dates</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Sendai -->
+                <div class="bg-white rounded-[2rem] p-8 md:p-10 shadow-sm hover:shadow-xl transition-shadow duration-300 section-fade flex flex-col justify-between h-full">
+                    <div>
+                        <h3 class="text-miku font-bold text-2xl mb-2">SENDAI</h3>
+                        <p class="text-3xl font-bold text-gray-900 mb-6">ゼビオアリーナ仙台</p>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="bg-black text-white text-xs px-2 py-0.5 rounded">3.14</span>
+                                    <span class="text-sm font-semibold text-gray-500">Day 1</span>
+                                </div>
+                                <p class="text-sm text-gray-600"><span class="font-medium">昼公演</span> 11:00 OPEN / 12:00 START</p>
+                                <p class="text-sm text-gray-600"><span class="font-medium">夜公演</span> 17:00 OPEN / 18:00 START</p>
+                            </div>
+                            <div class="border-t border-gray-100 pt-4">
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="bg-black text-white text-xs px-2 py-0.5 rounded">3.15</span>
+                                    <span class="text-sm font-semibold text-gray-500">Day 2</span>
+                                </div>
+                                <p class="text-sm text-gray-600"><span class="font-medium">夜公演</span> 15:00 OPEN / 16:00 START</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <span class="inline-block w-full text-center py-3 rounded-xl bg-gray-100 text-gray-400 text-sm cursor-not-allowed">Tickets Coming Soon</span>
+                    </div>
+                </div>
+
+                <!-- Osaka -->
+                <div class="bg-white rounded-[2rem] p-8 md:p-10 shadow-sm hover:shadow-xl transition-shadow duration-300 section-fade flex flex-col justify-between h-full" style="transition-delay: 0.1s;">
+                    <div>
+                        <h3 class="text-miku font-bold text-2xl mb-2">OSAKA</h3>
+                        <p class="text-3xl font-bold text-gray-900 mb-6">大阪城ホール</p>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="bg-black text-white text-xs px-2 py-0.5 rounded">3.28</span>
+                                    <span class="text-sm font-semibold text-gray-500">Day 1</span>
+                                </div>
+                                <p class="text-sm text-gray-600"><span class="font-medium">昼公演</span> 11:00 OPEN / 12:00 START</p>
+                                <p class="text-sm text-gray-600"><span class="font-medium">夜公演</span> 18:00 OPEN / 19:00 START</p>
+                            </div>
+                            <div class="border-t border-gray-100 pt-4">
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="bg-black text-white text-xs px-2 py-0.5 rounded">3.29</span>
+                                    <span class="text-sm font-semibold text-gray-500">Day 2</span>
+                                </div>
+                                <p class="text-sm text-gray-600"><span class="font-medium">昼公演</span> 10:00 OPEN / 11:00 START</p>
+                                <p class="text-sm text-gray-600"><span class="font-medium">夜公演</span> 18:00 OPEN / 19:00 START</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="mt-8">
+                        <span class="inline-block w-full text-center py-3 rounded-xl bg-gray-100 text-gray-400 text-sm cursor-not-allowed">Tickets Coming Soon</span>
+                    </div>
+                </div>
+
+                <!-- Tokyo -->
+                <div class="bg-white rounded-[2rem] p-8 md:p-10 shadow-sm hover:shadow-xl transition-shadow duration-300 section-fade flex flex-col justify-between h-full" style="transition-delay: 0.2s;">
+                    <div>
+                        <h3 class="text-miku font-bold text-2xl mb-2">TOKYO</h3>
+                        <p class="text-3xl font-bold text-gray-900 mb-6">有明アリーナ</p>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="bg-black text-white text-xs px-2 py-0.5 rounded">4.4</span>
+                                    <span class="text-sm font-semibold text-gray-500">Day 1</span>
+                                </div>
+                                <p class="text-sm text-gray-600"><span class="font-medium">昼公演</span> 11:00 OPEN / 12:00 START</p>
+                                <p class="text-sm text-gray-600"><span class="font-medium">夜公演</span> 18:00 OPEN / 19:00 START</p>
+                            </div>
+                            <div class="border-t border-gray-100 pt-4">
+                                <div class="flex items-center space-x-2 mb-1">
+                                    <span class="bg-black text-white text-xs px-2 py-0.5 rounded">4.5</span>
+                                    <span class="text-sm font-semibold text-gray-500">Day 2</span>
+                                </div>
+                                <p class="text-sm text-gray-600"><span class="font-medium">昼公演</span> 11:00 OPEN / 12:00 START</p>
+                                <p class="text-sm text-gray-600"><span class="font-medium">夜公演</span> 17:00 OPEN / 18:00 START</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="mt-8">
+                        <span class="inline-block w-full text-center py-3 rounded-xl bg-gray-100 text-gray-400 text-sm cursor-not-allowed">Tickets Coming Soon</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artist & Ticket Section -->
+    <section id="ticket" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <!-- Artist Header -->
+            <div class="flex flex-col md:flex-row items-center justify-between mb-20 section-fade">
+                <div class="md:w-1/2">
+                    <p class="text-miku font-bold mb-2">ARTIST</p>
+                    <h2 class="text-5xl font-bold mb-6">初音ミク</h2>
+                    <p class="text-gray-500">The virtual singer connecting the world through sound.</p>
+                </div>
+                <div class="md:w-1/3 mt-8 md:mt-0">
+                    <img src="https://tour.btm-m.site/NewDays/images/miku.webp" alt="Miku Avatar" class="w-full h-auto drop-shadow-2xl rounded-2xl grayscale hover:grayscale-0 transition-all duration-700">
+                </div>
+            </div>
+
+            <hr class="border-gray-100 mb-20">
+
+            <!-- Tickets -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- Schedule Timeline -->
+                <div class="section-fade">
+                    <h2 class="text-3xl font-bold mb-8">Ticket Schedule</h2>
+                    <div class="space-y-8 border-l-2 border-gray-100 pl-8 ml-2">
+                        
+                        <div class="relative">
+                            <span class="absolute -left-[39px] top-1 h-5 w-5 rounded-full bg-miku border-4 border-white shadow-sm"></span>
+                            <h4 class="font-bold text-lg">Now2Future Plus Member First Advance</h4>
+                            <p class="text-miku font-mono text-sm mt-1">2025.12.20 12:00 - 2025.12.27 23:59 JST</p>
+                        </div>
+
+                        <div class="relative">
+                            <span class="absolute -left-[39px] top-1 h-5 w-5 rounded-full bg-gray-300 border-4 border-white"></span>
+                            <h4 class="font-bold text-lg text-gray-800">Official First Lottery Advance</h4>
+                            <p class="text-gray-500 font-mono text-sm mt-1">2026.1.5 12:00 - 2026.1.11 23:59 JST</p>
+                        </div>
+
+                        <div class="relative">
+                            <span class="absolute -left-[39px] top-1 h-5 w-5 rounded-full bg-gray-300 border-4 border-white"></span>
+                            <h4 class="font-bold text-lg text-gray-800">Official Second Lottery Advance</h4>
+                            <p class="text-gray-500 font-mono text-sm mt-1">2026.1.26 12:00 - 2026.2.1 23:59 JST</p>
+                        </div>
+
+                        <div class="relative">
+                            <span class="absolute -left-[39px] top-1 h-5 w-5 rounded-full bg-gray-300 border-4 border-white"></span>
+                            <h4 class="font-bold text-lg text-gray-800">Pre-order</h4>
+                            <p class="text-gray-500 font-mono text-sm mt-1">2026.2.2 18:00 - 2026.2.15 22:00 JST</p>
+                        </div>
+
+                        <div class="relative">
+                            <span class="absolute -left-[39px] top-1 h-5 w-5 rounded-full bg-black border-4 border-white"></span>
+                            <h4 class="font-bold text-lg text-gray-800">General Release</h4>
+                            <div class="mt-2 space-y-1 text-sm font-mono text-gray-500">
+                                <p><span class="inline-block w-16 font-bold text-black">TOKYO</span> 2026.3.1 18:00 - 3.12 22:00</p>
+                                <p><span class="inline-block w-16 font-bold text-black">OSAKA</span> 2026.3.15 18:00 - 3.26 22:00</p>
+                                <p><span class="inline-block w-16 font-bold text-black">SENDAI</span> 2026.3.22 18:00 - 4.1 22:00</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Pricing -->
+                <div class="section-fade">
+                    <h2 class="text-3xl font-bold mb-8">Prices</h2>
+                    
+                    <!-- Tokyo Card -->
+                    <div class="bg-apple-gray rounded-2xl p-6 mb-4">
+                        <div class="flex justify-between items-baseline mb-4">
+                            <h3 class="font-bold text-xl">TOKYO</h3>
+                            <span class="text-gray-500 text-sm">有明アリーナ</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between border-b border-gray-200 pb-1"><span>S Seat</span><span class="font-mono">¥12,900</span></div>
+                            <div class="flex justify-between border-b border-gray-200 pb-1"><span>A Seat</span><span class="font-mono">¥9,900</span></div>
+                            <div class="flex justify-between border-b border-gray-200 pb-1"><span>B Seat</span><span class="font-mono">¥8,900</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Osaka/Sendai Card -->
+                    <div class="bg-apple-gray rounded-2xl p-6">
+                        <div class="flex justify-between items-baseline mb-4">
+                            <h3 class="font-bold text-xl">OSAKA / SENDAI</h3>
+                            <span class="text-gray-500 text-sm">大阪城ホール / ゼビオアリーナ</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between border-b border-gray-200 pb-1"><span>S Seat</span><span class="font-mono">¥11,900</span></div>
+                            <div class="flex justify-between border-b border-gray-200 pb-1"><span>A Seat</span><span class="font-mono">¥8,900</span></div>
+                            <div class="flex justify-between border-b border-gray-200 pb-1"><span>B Seat</span><span class="font-mono">¥8,900</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 border border-gray-200 rounded-xl">
+                        <h4 class="font-bold text-sm mb-2 text-gray-800">Students & Youth (All Venues)</h4>
+                        <div class="flex justify-between text-sm text-gray-600 mb-1"><span>U-18</span><span class="font-mono">¥4,500</span></div>
+                        <div class="flex justify-between text-sm text-gray-600"><span>U-18 Companion</span><span class="font-mono">¥9,500</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Section (Dark Mode Inverted) -->
+    <section id="special" class="py-24 bg-black text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+             <div class="absolute inset-0 bg-gradient-to-r from-miku-dark to-blue-900"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center gap-12">
+            <div class="md:w-1/2 section-fade">
+                <span class="text-miku font-bold tracking-widest text-sm uppercase mb-2 block">Visitor Benefits</span>
+                <!-- Removed H2: 入场者特典 -->
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8">
+                    <h3 class="text-2xl font-bold mb-2">CD - Now2Future PRESENTS Re:39s+</h3>
+                    <p class="text-gray-400 text-sm mb-6">Exclusive Remix Compilation</p>
+                    
+                    <ul class="space-y-4 font-light text-gray-300">
+                        <li class="flex gap-4"><span class="text-miku font-mono">01</span><span>After Dream (TeddyLoid Remix)</span></li>
+                        <li class="flex gap-4"><span class="text-miku font-mono">02</span><span>愛迷エレジー (Reloaded | Ayase Remix)</span></li>
+                        <li class="flex gap-4"><span class="text-miku font-mono">03</span><span>ALWAYS SNOW TOWN (TAKU INOUE Remix)</span></li>
+                        <li class="flex gap-4"><span class="text-miku font-mono">04</span><span>INFINITE MELODY (Neru Remix)</span></li>
+                        <li class="flex gap-4"><span class="text-miku font-mono">05</span><span>INFINITE MELODY (n-buna Remix)</span></li>
+                    </ul>
+                </div>
+            </div>
+             <div class="md:w-1/2 flex justify-center section-fade">
+                <!-- Abstract CD visual representation -->
+                 <div class="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-tr from-gray-800 to-black border border-gray-700 flex items-center justify-center shadow-2xl relative">
+                     <div class="absolute inset-0 rounded-full bg-miku blur-3xl opacity-20"></div>
+                     <div class="w-20 h-20 rounded-full bg-black border border-gray-800"></div>
+                     <p class="absolute bottom-[-40px] text-xs tracking-widest text-gray-500">NOT FOR SALE</p>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-apple-gray">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="bg-white rounded-[2.5rem] p-8 md:p-16 shadow-lg section-fade">
+                <div class="flex flex-col md:flex-row gap-12 items-center">
+                    <div class="md:w-1/2">
+                        <h2 class="text-3xl font-bold mb-6">What's Hatsune Miku?</h2>
+                        <div class="text-gray-600 leading-relaxed space-y-4 text-justify">
+                            <p>
+                                Hatsune Miku is a music software developed by Crypton Future Media, INC., and it enables anyone to make the computer sing by entering lyrics and melodies.
+                            </p>
+                            <p>
+                                As a massive number of users created music using the software and posted their works on the Internet, Hatsune Miku quickly evolved into a cultural phenomenon. Moreover, Hatsune Miku has gained much attention as a character, involved in many fields such as merchandising and live performance as a virtual singer. Now her popularity has spread across the globe.
+                            </p>
+                            <p class="text-sm font-bold mt-4 text-gray-900">Art by KEI</p>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center">
+                        <img src="https://piapro.net/intl/images/ch_img_miku.png" alt="Hatsune Miku V3" class="max-h-[400px] object-contain drop-shadow-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 pt-16 pb-8 text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <!-- Company Logos Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center mb-12 opacity-80">
+                <a href="https://records.btm-m.site/" class="flex justify-center grayscale hover:grayscale-0 transition"><img src="https://records.btm-m.site/assets/images/logo.svg" alt="Now2Future" class="h-8"></a>
+                <a href="https://www.universal-music.co.jp/" class="flex justify-center grayscale hover:grayscale-0 transition"><img src="https://records.btm-m.site/assets/images/UMG.svg" alt="Universal Music" class="h-8"></a>
+                <a href="https://sega.co.jp" class="flex justify-center grayscale hover:grayscale-0 transition"><img src="https://records.btm-m.site/mikulive_26/SEGA_logo.svg" alt="SEGA" class="h-6"></a>
+                <a href="http://www.piapro.net" class="flex justify-center grayscale hover:grayscale-0 transition"><img src="https://piapro.net/intl/images/ch_logo_miku.png" alt="Piapro" class="h-8"></a>
+            </div>
+
+            <div class="border-t border-gray-100 pt-8 mb-8">
+                <h5 class="font-bold text-gray-900 mb-2">Sponsors</h5>
+                <p class="leading-relaxed text-justify text-[10px] text-gray-400">
+                    ABEMA / arma bianca Inc. / BANDAI / bilibiliGoods / Bushiroad Inc. / COVER Corp. / echo / Lawson Entertainment, Inc. / NBCUniversal Entertainment Japan / OTOIRO Inc. / Project SEKAI: COLORFUL STAGE! feat. Hatsune Miku / Sony Music Entertainment / Universal Studio Japan / TOKYO MX / Yamaha Music Japan Co.,Ltd.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-[10px] text-gray-400 mb-8">
+                 <div>
+                    <span class="font-bold text-gray-600 block mb-1">CG Production Support</span>
+                    <div class="flex items-center gap-2">
+                        <span>MARZA ANIMATION PLANET</span>
+                        <img src="https://records.btm-m.site/mikulive_26/marza.png" alt="Marza" class="h-3 grayscale">
+                    </div>
+                 </div>
+                 <div>
+                    <span class="font-bold text-gray-600 block mb-1">Streaming Support</span>
+                    <span>ABEMA | PIA LIVE STREAM | LAWSON TICKET LIVE STREAMING</span>
+                 </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center border-t border-gray-100 pt-8">
+                <div class="mb-4 md:mb-0">
+                    <p>Art by San-Kyu-Illustrator (AxM Production) 初音ミク © Crypton Future Media Inc. www.piapro.net</p>
+                    <p>© 2025 Now2Future RECORDS / Universal Music LLC All rights reserved.</p>
+                </div>
+                <div class="flex space-x-4">
+                    <!-- Added IDs and changed href to prevent jump -->
+                    <a href="javascript:void(0)" id="privacyLink" class="hover:underline">Privacy Policy</a>
+                    <a href="javascript:void(0)" id="termsLink" class="hover:underline">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity modal-backdrop"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl modal-panel" onclick="event.stopPropagation()">
+                    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 relative">
+                         <button type="button" class="close-modal absolute top-4 right-4 text-gray-400 hover:text-gray-500">
+                            <span class="sr-only">Close</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-left sm:mt-0 w-full">
+                                <h3 class="text-2xl font-bold leading-6 text-gray-900 mb-6" id="modal-title">プライバシーポリシー</h3>
+                                <div class="mt-2 prose prose-sm prose-gray max-w-none modal-scroll max-h-[60vh] overflow-y-auto pr-4 text-justify">
+                                    <p>Now2Future RECORDS（以下「当社」といいます）は、Now2Future PRESENTS 初音ミク ONE-MAN LIVE "INFINIEY 2026"（以下「本イベント」といいます）のウェブサイト（以下「本サイト」といいます）の運営にあたり、お客様の個人情報の重要性を認識し、その保護を徹底するため、以下のプライバシーポリシーを定めます。</p>
+                                    <h4>1. 個人情報の取得について</h4>
+                                    <p>当社は、本サイトを通じたチケット販売、お問い合わせ対応、メールマガジン配信等のサービス提供に必要な範囲で、お客様の氏名、メールアドレス、電話番号等の個人情報を適法かつ公正な手段により取得いたします。</p>
+                                    <h4>2. 個人情報の利用目的</h4>
+                                    <p>取得した個人情報は、以下の目的で利用いたします。</p>
+                                    <ul>
+                                        <li>本イベントに関する情報提供およびチケット販売、発送業務</li>
+                                        <li>お問い合わせへの対応</li>
+                                        <li>本サイトのサービス向上、改善のための利用状況分析</li>
+                                        <li>当社および本イベント協賛企業のサービスに関するご案内（ご希望の方のみ）</li>
+                                    </ul>
+                                    <h4>3. 個人情報の第三者への提供</h4>
+                                    <p>当社は、法令に基づく場合、お客様の同意がある場合、または本イベントの運営に必要な範囲で業務委託先（チケット販売業者、配送業者等）に提供する場合を除き、個人情報を第三者に提供いたしません。</p>
+                                    <h4>4. Cookie（クッキー）の利用について</h4>
+                                    <p>本サイトでは、お客様の利便性向上およびアクセス解析のためにCookieを使用する場合があります。Cookieによってお客様個人を特定することはできません。お客様はブラウザの設定によりCookieの受け取りを拒否することができますが、その場合、本サイトの一部機能がご利用いただけなくなる可能性があります。</p>
+                                    <h4>5. 安全管理措置</h4>
+                                    <p>当社は、個人情報の漏洩、滅失、毀損等を防止するため、適切なセキュリティ対策を講じ、個人情報を安全に管理いたします。</p>
+                                    <h4>6. お問い合わせ窓口</h4>
+                                    <p>個人情報の取扱いに関するお問い合わせは、Now2Future RECORDS公式サイトのお問い合わせフォームよりお願いいたします。</p>
+                                    <p class="text-right text-gray-400 mt-4">最終改定日: 2025年12月1日</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Use Modal -->
+    <div id="termsModal" class="fixed inset-0 z-[100] hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity modal-backdrop"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl modal-panel" onclick="event.stopPropagation()">
+                    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 relative">
+                        <button type="button" class="close-modal absolute top-4 right-4 text-gray-400 hover:text-gray-500">
+                            <span class="sr-only">Close</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                        <div class="sm:flex sm:items-start">
+                            <div class="mt-3 text-left sm:mt-0 w-full">
+                                <h3 class="text-2xl font-bold leading-6 text-gray-900 mb-6" id="modal-title">利用規約</h3>
+                                <div class="mt-2 prose prose-sm prose-gray max-w-none modal-scroll max-h-[60vh] overflow-y-auto pr-4 text-justify">
+                                    <p>この利用規約（以下「本規約」といいます）は、Now2Future RECORDS（以下「当社」といいます）が運営するNow2Future PRESENTS 初音ミク ONE-MAN LIVE "INFINIEY 2026"の公式ウェブサイト（以下「本サイト」といいます）の利用条件を定めるものです。本サイトを利用されるお客様（以下「ユーザー」といいます）は、本規約に同意したものとみなされます。</p>
+                                    <h4>1. 適用範囲</h4>
+                                    <p>本規約は、本サイトの利用に関わる一切の関係に適用されます。</p>
+                                    <h4>2. 知的財産権</h4>
+                                    <p>本サイトに掲載されている全てのコンテンツ（文章、画像、動画、音声、音楽、ロゴ、キャラクターデザイン等）に関する著作権、商標権、その他の知的財産権は、当社、クリプトン・フューチャー・メディア株式会社、または各コンテンツの正当な権利者に帰属します。ユーザーは、私的利用の範囲を超えてこれらのコンテンツを無断で複製、転載、改変、公衆送信等することはできません。</p>
+                                    <h4>3. 禁止事項</h4>
+                                    <p>ユーザーは、本サイトの利用にあたり、以下の行為をしてはなりません。</p>
+                                    <ul>
+                                        <li>法令または公序良俗に違反する行為</li>
+                                        <li>犯罪行為に関連する行為</li>
+                                        <li>当社のサーバーまたはネットワークの機能を破壊したり、妨害したりする行為</li>
+                                        <li>当社のサービスの運営を妨害するおそれのある行為</li>
+                                        <li>他のユーザーに関する個人情報等を収集または蓄積する行為</li>
+                                        <li>当社または第三者の知的財産権、肖像権、プライバシー、名誉その他の権利または利益を侵害する行為</li>
+                                    </ul>
+                                    <h4>4. 免責事項</h4>
+                                    <p>当社は、本サイトに掲載する情報の正確性、最新性、有用性等について、いかなる保証も行いません。また、本サイトの利用によりユーザーに生じた損害について、当社は一切の責任を負わないものとします。</p>
+                                    <h4>5. 規約の変更</h4>
+                                    <p>当社は、必要と判断した場合には、ユーザーに通知することなくいつでも本規約を変更することができるものとします。変更後の規約は、本サイトに掲載された時点から効力を生じるものとします。</p>
+                                    <h4>6. 準拠法・裁判管轄</h4>
+                                    <p>本規約の解釈にあたっては、日本法を準拠法とします。本サイトに関して紛争が生じた場合には、東京地方裁判所を専属的合意管轄とします。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // ... existing code for scroll observer and navbar ...
+            // Intersection Observer for scroll animations
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // Optional: Stop observing once visible
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            const fadeElements = document.querySelectorAll('.section-fade');
+            fadeElements.forEach(el => observer.observe(el));
+
+            // Navbar scroll effect
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-sm');
+                } else {
+                    navbar.classList.remove('shadow-sm');
+                }
+            });
+
+            // ================= MODAL LOGIC =================
+            const privacyLink = document.getElementById('privacyLink');
+            const termsLink = document.getElementById('termsLink');
+            const privacyModal = document.getElementById('privacyModal');
+            const termsModal = document.getElementById('termsModal');
+            const closeButtons = document.querySelectorAll('.close-modal');
+            const modalBackdrops = document.querySelectorAll('.modal-backdrop');
+
+            const openModal = (modal) => {
+                modal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            };
+
+            const closeModal = (modal) => {
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            };
+
+            // Open Modals
+            privacyLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal(privacyModal);
+            });
+
+            termsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                openModal(termsModal);
+            });
+
+            // Close Modals (Button Click)
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    closeModal(privacyModal);
+                    closeModal(termsModal);
+                });
+            });
+
+            // Close Modals (Backdrop Click)
+            modalBackdrops.forEach(backdrop => {
+                backdrop.addEventListener('click', () => {
+                    closeModal(privacyModal);
+                    closeModal(termsModal);
+                });
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (!privacyModal.classList.contains('hidden')) closeModal(privacyModal);
+                    if (!termsModal.classList.contains('hidden')) closeModal(termsModal);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
