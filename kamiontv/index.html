@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAMI ON TV - i Will Know U | 2nd Album Release</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Zen Kaku Gothic New', 'sans-serif'],
+                    },
+                    colors: {
+                        /* Updated to Low Saturation Palette */
+                        'brand-pink': '#c08497', /* Dusty Rose */
+                        'brand-cyan': '#84c0ba', /* Muted Teal */
+                        'brand-dark': '#0a0a0a',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1.5s ease-out',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #111111; /* Softer Dark Background */
+            color: #e5e5e5; /* Slightly off-white text */
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02); /* More subtle glass */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05); /* Softer border */
+        }
+        .track-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            padding-left: 1rem;
+        }
+        .track-item {
+            transition: all 0.3s ease;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444; 
+        }
+        
+        /* Tab Animations */
+        .tab-content {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .tab-content.hidden {
+            display: none;
+            opacity: 0;
+        }
+        .tab-content:not(.hidden) {
+            display: block;
+            opacity: 1;
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-pink selection:text-white">
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+        <!-- Background Ambient Glow (Low Saturation) -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-brand-pink/10 rounded-full blur-[120px] -z-10 mix-blend-screen"></div>
+        <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-brand-cyan/10 rounded-full blur-[100px] -z-10 mix-blend-screen"></div>
+
+        <div class="animate-fade-in flex flex-col items-center gap-8 max-w-4xl w-full z-10">
+            <!-- Logo -->
+            <img src="https://records.btm-m.site/kamiontv/2nd_logo.svg" alt="KAMI ON TV - i Will Know U" class="w-full max-w-2xl h-auto drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+            
+            <div class="space-y-4">
+                <p class="text-brand-cyan tracking-[0.2em] text-lg md:text-xl uppercase font-bold opacity-80">Release Date</p>
+                <h2 class="text-4xl md:text-6xl font-black tracking-tighter text-white opacity-90">2025.12.31</h2>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 animate-bounce">
+                <i class="fas fa-chevron-down text-2xl text-gray-600"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Album Info Section -->
+    <section class="py-20 px-4 md:px-8 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            
+            <!-- Left: Jacket Art & Price -->
+            <div class="flex flex-col gap-8">
+                <div class="relative group perspective-1000">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-brand-pink to-brand-cyan opacity-10 blur-xl group-hover:opacity-20 transition-opacity duration-500"></div>
+                    <img src="https://records.btm-m.site/kamiontv/2nd_jacket.png" alt="i Will Know U Jacket" class="relative z-10 w-full h-auto shadow-2xl rounded-sm border border-gray-800 transition-transform duration-500 group-hover:scale-[1.02] grayscale-[0.2]">
+                    <p class="mt-4 text-gray-500 text-sm text-center">Jacket Illustration by YonnJin</p>
+                </div>
+
+                <!-- Price Info -->
+                <div class="glass-panel p-6 rounded-lg space-y-4">
+                    <div class="flex justify-between items-baseline border-b border-gray-800/50 pb-3">
+                        <span class="text-gray-400 font-medium">通常盤</span>
+                        <div class="text-right">
+                            <span class="text-2xl font-bold font-mono text-gray-200">2,999</span>
+                            <span class="text-sm text-gray-500">円 (稅込み)</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-baseline pt-1">
+                        <span class="text-brand-pink font-bold flex items-center gap-2">
+                            <i class="fas fa-star text-xs animate-pulse opacity-70"></i> 初回限定盤
+                        </span>
+                        <div class="text-right">
+                            <span class="text-2xl font-bold font-mono text-brand-pink">3,999</span>
+                            <span class="text-sm text-brand-pink/70">円 (稅込み)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stream / Download Button -->
+                <a href="https://kmotv.lnk.to/2ndAlbum" target="_blank" class="block w-full py-4 bg-gradient-to-r from-brand-pink to-brand-cyan text-brand-dark font-black text-center text-xl uppercase tracking-widest hover:brightness-110 hover:scale-[1.01] transition-all shadow-[0_0_15px_rgba(192,132,151,0.2)] rounded-lg opacity-90 hover:opacity-100">
+                    <i class="fas fa-headphones-simple mr-2"></i> Stream / Download
+                </a>
+            </div>
+
+            <!-- Right: Tracklist -->
+            <div class="glass-panel p-8 md:p-10 rounded-xl min-h-[600px] flex flex-col">
+                <h3 class="text-2xl font-bold mb-6 flex items-center gap-3 text-gray-200">
+                    <span class="w-2 h-8 bg-brand-pink block opacity-80"></span>
+                    TRACK LIST
+                </h3>
+                
+                <!-- Tab Navigation -->
+                <div class="flex border-b border-gray-800 mb-6">
+                    <button id="tab-disc1" onclick="switchTab('disc1')" class="px-6 py-3 text-sm font-bold tracking-widest uppercase border-b-2 border-brand-pink text-brand-pink transition-all duration-300 hover:text-white focus:outline-none">
+                        Disc 1
+                    </button>
+                    <button id="tab-disc2" onclick="switchTab('disc2')" class="px-6 py-3 text-sm font-bold tracking-widest uppercase border-b-2 border-transparent text-gray-500 opacity-60 hover:opacity-100 hover:text-gray-300 transition-all duration-300 focus:outline-none flex items-center gap-2">
+                        Disc 2 <span class="text-[9px] bg-brand-pink text-brand-dark px-1.5 py-0.5 rounded font-black tracking-normal leading-none">初回限定</span>
+                    </button>
+                </div>
+
+                <!-- Disc 1 Content -->
+                <div id="content-disc1" class="tab-content">
+                    <ul class="space-y-1 text-lg font-light text-gray-300">
+                        <!-- Tracks -->
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-cyan font-mono w-8 opacity-80">01</span> Learning (Instrumental Intro)
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-cyan font-mono w-8 opacity-80">02</span> カウントダウン
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-cyan font-mono w-8 opacity-80">03</span> DOG
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-cyan font-mono w-8 opacity-80">04</span> Latest News
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-cyan font-mono w-8 opacity-80">05</span> サプライズゲスト
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-cyan font-mono w-8 opacity-80">06</span> 新世界の片隅に
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-cyan font-mono w-8 opacity-80">07</span> Whom
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-cyan font-mono w-8 opacity-80">08</span> Hey!
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-cyan font-mono w-8 opacity-80">09</span> 京都のラブストーリー
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-cyan font-mono w-8 opacity-80">10</span> Swimming
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-cyan font-mono w-8 opacity-80">11</span> Differences
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4 text-brand-pink opacity-90">
+                            <span class="font-mono w-8">12</span> カウントダウン (Trance Remix)
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Disc 2 Content -->
+                <div id="content-disc2" class="tab-content hidden">
+                    <ul class="space-y-1 text-lg font-light text-gray-300">
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-pink font-mono w-8 opacity-80">01</span> Extremely Cool (Voice Drama)
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-pink font-mono w-8 opacity-80">02</span> 京都のラブストーリー <span class="text-sm opacity-60 self-center ml-1">(Vo. 椎名林檎)</span>
+                        </li>
+                        <li class="track-item py-3 border-b border-gray-800 flex gap-4">
+                            <span class="text-brand-pink font-mono w-8 opacity-80">03</span> 新世界の片隅に <span class="text-sm opacity-60 self-center ml-1">(TeddyLoid Remix)</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-8 p-4 border border-brand-pink/20 bg-brand-pink/5 rounded text-sm text-gray-400">
+                        <p class="mb-2 text-brand-pink font-bold"><i class="fas fa-info-circle mr-1"></i> 初回限定盤特典</p>
+                        <p>Disc 2は初回限定盤のみに付属します。Voice Dramaおよびリミックス音源はストリーミング配信されません。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Band Members -->
+    <section class="py-20 bg-black/20">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <h3 class="text-2xl font-bold mb-12 inline-block border-b-2 border-brand-cyan pb-2 uppercase tracking-widest text-gray-300 opacity-80">Members</h3>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+                <div class="group">
+                    <div class="w-24 h-24 mx-auto mb-4 bg-gray-800/50 rounded-full flex items-center justify-center border border-gray-700 group-hover:border-brand-pink transition-colors">
+                        <i class="fas fa-microphone text-2xl text-gray-500 group-hover:text-brand-pink transition-colors"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-200">SWEETIE</h4>
+                    <p class="text-sm text-gray-500 mt-1">Vocal</p>
+                </div>
+                <div class="group">
+                    <div class="w-24 h-24 mx-auto mb-4 bg-gray-800/50 rounded-full flex items-center justify-center border border-gray-700 group-hover:border-brand-pink transition-colors">
+                        <i class="fas fa-guitar text-2xl text-gray-500 group-hover:text-brand-pink transition-colors"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-200">ふつ</h4>
+                    <p class="text-sm text-gray-500 mt-1">Guitar & Producer</p>
+                </div>
+                <div class="group">
+                    <div class="w-24 h-24 mx-auto mb-4 bg-gray-800/50 rounded-full flex items-center justify-center border border-gray-700 group-hover:border-brand-pink transition-colors">
+                        <i class="fas fa-music text-2xl text-gray-500 group-hover:text-brand-pink transition-colors"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-200">独占P</h4>
+                    <p class="text-sm text-gray-500 mt-1">Keyboard</p>
+                </div>
+                <div class="group">
+                    <div class="w-24 h-24 mx-auto mb-4 bg-gray-800/50 rounded-full flex items-center justify-center border border-gray-700 group-hover:border-brand-pink transition-colors">
+                        <i class="fas fa-bolt text-2xl text-gray-500 group-hover:text-brand-pink transition-colors"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-200">O's</h4>
+                    <p class="text-sm text-gray-500 mt-1">Bass</p>
+                </div>
+                <div class="group">
+                    <div class="w-24 h-24 mx-auto mb-4 bg-gray-800/50 rounded-full flex items-center justify-center border border-gray-700 group-hover:border-brand-pink transition-colors">
+                        <i class="fas fa-drum text-2xl text-gray-500 group-hover:text-brand-pink transition-colors"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-200">Sick</h4>
+                    <p class="text-sm text-gray-500 mt-1">Drum</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="pt-20 pb-10 px-4 border-t border-gray-800/50 bg-[#0d0d0d]">
+        <div class="max-w-4xl mx-auto text-center flex flex-col items-center gap-8">
+            
+            <!-- Label Logo -->
+            <a href="https://records.btm-m.site/" target="_blank" class="hover:opacity-80 transition-opacity">
+                <!-- Modified: Added brightness-0 and invert to make the logo white/light -->
+                <img src="https://records.btm-m.site/assets/images/logo.svg" alt="Now2Future RECORDS" class="h-12 w-auto transition-all duration-300 brightness-0 invert opacity-50 hover:opacity-80">
+            </a>
+
+            <div class="text-gray-600 text-sm space-y-2">
+                <p>Now2Future RECORDS is a division of Universal Music LLC.</p>
+                <p>© 2025 Now2Future RECORDS All Rights Reserved.</p>
+            </div>
+
+            <!-- Legal Links -->
+            <div class="flex gap-6 text-xs text-gray-600 uppercase tracking-wider">
+                <button onclick="openModal('privacy')" class="hover:text-brand-cyan transition-colors">Privacy Policy</button>
+                <span>|</span>
+                <button onclick="openModal('terms')" class="hover:text-brand-cyan transition-colors">Terms of Use</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals (Hidden by default) -->
+    
+    <!-- Privacy Policy Modal -->
+    <div id="modal-privacy" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeModal('privacy')"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-[#1a1a1a] border border-gray-700 p-8 rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-200">Privacy Policy</h2>
+                <button onclick="closeModal('privacy')" class="text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="prose prose-invert prose-sm text-gray-400">
+                <h3 class="text-gray-200 font-bold mt-4">1. Introduction</h3>
+                <p>Now2Future RECORDS ("we", "our", "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you visit our website.</p>
+                
+                <h3 class="text-gray-200 font-bold mt-4">2. Information Collection</h3>
+                <p>We collect information you provide directly to us, such as when you fill out a contact form, including your name, email address, and company details. We also automatically collect usage data via cookies to improve site performance.</p>
+                
+                <h3 class="text-gray-200 font-bold mt-4">3. Use of Information</h3>
+                <p>Your information is used to respond to your inquiries, improve our services, and communicate with you about our projects. We do not sell your personal data to third parties.</p>
+                
+                <h3 class="text-gray-200 font-bold mt-4">4. Data Security</h3>
+                <p>We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, or destruction.</p>
+                
+                <h3 class="text-gray-200 font-bold mt-4">5. Contact Us</h3>
+                <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:N2F.RE@umg-mail.com" class="text-brand-cyan">N2F.RE@umg-mail.com</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="modal-terms" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeModal('terms')"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-2xl bg-[#1a1a1a] border border-gray-700 p-8 rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-200">Terms of Use</h2>
+                <button onclick="closeModal('terms')" class="text-gray-500 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="prose prose-invert prose-sm text-gray-400">
+                <h3 class="text-gray-200 font-bold mt-4">1. Acceptance of Terms</h3>
+                <p>By accessing and using the Now2Future RECORDS website, you agree to be bound by these Terms of Use. If you do not agree, please do not use this site.</p>
+                
+                <h3 class="text-gray-200 font-bold mt-4">2. Intellectual Property</h3>
+                <p>All content on this website, including but not limited to music, text, graphics, logos, images, and software, is the property of Now2Future RECORDS or its content suppliers and is protected by international copyright laws.</p>
+                
+                <h3 class="text-gray-200 font-bold mt-4">3. License and Access</h3>
+                <p>We grant you a limited license to access and make personal use of this site. You may not download (other than page caching) or modify any portion of it without our express written consent.</p>
+                
+                <h3 class="text-gray-200 font-bold mt-4">4. Limitation of Liability</h3>
+                <p>Now2Future RECORDS will not be liable for any damages of any kind arising from the use of this site, including but not limited to direct, indirect, incidental, punitive, and consequential damages.</p>
+                
+                <h3 class="text-gray-200 font-bold mt-4">5. Governing Law</h3>
+                <p>These terms shall be governed by and construed in accordance with the laws of Japan, without regard to its conflict of law provisions.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(type) {
+            document.getElementById(`modal-${type}`).classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal(type) {
+            document.getElementById(`modal-${type}`).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeModal('privacy');
+                closeModal('terms');
+            }
+        });
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            // Show selected content
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+
+            // Reset buttons styling
+            const btn1 = document.getElementById('tab-disc1');
+            const btn2 = document.getElementById('tab-disc2');
+
+            // Helper to set active/inactive styles
+            const setActive = (btn) => {
+                btn.classList.remove('border-transparent', 'text-gray-500', 'opacity-60');
+                btn.classList.add('border-brand-pink', 'text-brand-pink', 'opacity-100');
+            };
+            const setInactive = (btn) => {
+                btn.classList.remove('border-brand-pink', 'text-brand-pink', 'opacity-100');
+                btn.classList.add('border-transparent', 'text-gray-500', 'opacity-60');
+            };
+
+            if (tabId === 'disc1') {
+                setActive(btn1);
+                setInactive(btn2);
+            } else {
+                setInactive(btn1);
+                setActive(btn2);
+            }
+        }
+    </script>
+</body>
+</html>
