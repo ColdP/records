@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统安全警示 - 违法操作被锁定</title>
+    <!-- 引入 Material Symbols 图标库 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <!-- 引入 Google Fonts (Noto Sans SC & Roboto Mono for logs) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+    <!-- 引入 QRCode.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        :root {
+            /* Material 3 Color Tokens - Error/Expressive Theme */
+            --md-sys-color-surface: #FFF8F6;
+            --md-sys-color-surface-container: #FFFFFF;
+            --md-sys-color-on-surface: #201A19;
+            --md-sys-color-primary: #9C4146;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #FFDAD9;
+            --md-sys-color-on-primary-container: #40000A;
+            --md-sys-color-error: #BA1A1A;
+            --md-sys-color-outline: #857372;
+            
+            /* Coupon Colors */
+            --coupon-national: #E2483D;
+            --coupon-province: #F19E39;
+            --coupon-billions: #D92027;
+
+            /* Spacing & Radius */
+            --radius-xl: 28px;
+            --radius-m: 16px;
+            --radius-s: 12px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--md-sys-color-surface);
+            color: var(--md-sys-color-on-surface);
+            font-family: 'Noto Sans SC', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 模糊背景层 */
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(var(--md-sys-color-primary-container) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        /* 主卡片容器 */
+        .alert-card {
+            background: var(--md-sys-color-surface-container);
+            width: 90%;
+            max-width: 420px;
+            border-radius: var(--radius-xl);
+            box-shadow: 0 25px 50px -12px rgba(156, 65, 70, 0.25);
+            padding: 32px 24px;
+            text-align: center;
+            position: relative;
+            border: 1px solid rgba(186, 26, 26, 0.1);
+            animation: popIn 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9) translateY(20px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        /* 图标动画 */
+        .lock-icon-container {
+            width: 80px;
+            height: 80px;
+            background: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: shake 0.8s ease-in-out infinite;
+        }
+
+        .material-symbols-outlined {
+            font-size: 40px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 900;
+            margin: 0 0 8px 0;
+            color: var(--md-sys-color-error);
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--md-sys-color-outline);
+            margin-bottom: 24px;
+            font-family: monospace;
+            background: rgba(0,0,0,0.03);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 8px;
+        }
+
+        /* 账单明细区域 */
+        .bill-details {
+            background: #FFF0EE;
+            border-radius: var(--radius-m);
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+            align-items: center;
+        }
+
+        .price-original {
+            text-decoration: line-through;
+            color: var(--md-sys-color-outline);
+        }
+
+        /* 优惠标签样式 */
+        .subsidy-tag {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            margin-right: 8px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .tag-national { background: linear-gradient(135deg, #FF6B6B, #E2483D); }
+        .tag-province { background: linear-gradient(135deg, #FFC069, #F19E39); }
+        .tag-billions { background: linear-gradient(135deg, #FF4D4F, #D92027); box-shadow: 0 2px 4px rgba(217, 32, 39, 0.3); }
+
+        .discount-text {
+            color: var(--md-sys-color-error);
+            font-weight: bold;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(0,0,0,0.1);
+            margin: 16px 0;
+            border-bottom: 1px dashed rgba(0,0,0,0.2);
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 10px;
+        }
+
+        .total-label {
+            font-weight: bold;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        .total-price {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--md-sys-color-error);
+            line-height: 1;
+        }
+
+        .total-price span {
+            font-size: 16px;
+            margin-right: 2px;
+        }
+
+        /* 按钮 */
+        .pay-btn {
+            background: var(--md-sys-color-error);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 100px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(186, 26, 26, 0.3);
+        }
+
+        .pay-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(186, 26, 26, 0.4);
+        }
+
+        .pay-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 模态框 (Dialog) */
+        dialog {
+            border: none;
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            background: white;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 320px;
+            width: 100%;
+            text-align: center;
+        }
+
+        dialog::backdrop {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        dialog h2 {
+            margin-top: 0;
+            color: var(--md-sys-color-on-surface);
+        }
+
+        /* 修改：针对 QRCode.js 生成的容器和图片样式 */
+        #qr-code-container {
+            margin: 16px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #qr-code-container img {
+            border-radius: 12px;
+            border: 4px solid var(--md-sys-color-primary-container);
+            padding: 5px; /* 增加一点内边距让二维码不贴边 */
+            background: white;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: 1px solid var(--md-sys-color-outline);
+            color: var(--md-sys-color-on-surface);
+            padding: 10px 24px;
+            border-radius: 100px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 16px;
+        }
+        
+        .close-btn:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        /* 底部法律声明 */
+        .footer-text {
+            font-size: 11px;
+            color: var(--md-sys-color-outline);
+            margin-top: 24px;
+            line-height: 1.5;
+        }
+
+        /* ------------------------
+           通用死机层 (BSOD / Kernel Panic)
+           ------------------------ */
+        #bsod {
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 99999;
+            cursor: none; /* 隐藏鼠标 */
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Windows 10 (经典蓝) */
+        .bsod-win10 {
+            background-color: #0078D7;
+            color: white;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            padding: 10% 15%;
+            text-align: left;
+        }
+
+        /* Windows 11 (黑屏版本) */
+        .bsod-win11 {
+            background-color: #000000;
+            color: white;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            padding: 10% 15%;
+            text-align: left;
+        }
+
+        /* Win 10/11 通用内部元素 */
+        .bsod-win-sad-face { font-size: 10rem; margin-bottom: 2rem; font-weight: 300; }
+        .bsod-win-message { font-size: 1.8rem; line-height: 1.4; margin-bottom: 2rem; font-weight: 300; }
+        .bsod-win-percent { font-size: 1.8rem; margin-bottom: 3rem; font-weight: 300; }
+        .bsod-win-details { display: flex; align-items: flex-start; font-size: 0.9rem; line-height: 1.6; }
+        .bsod-win-qr { background: white; padding: 5px; margin-right: 20px; }
+        .bsod-win-qr img { width: 100px; height: 100px; }
+
+        /* macOS (Kernel Panic) */
+        .bsod-mac {
+            background-color: #202020;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .bsod-mac-content {
+            background: rgba(0,0,0,0.5);
+            padding: 40px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+        }
+        .bsod-mac-icon { font-size: 64px; margin-bottom: 24px; color: #ddd; }
+        .bsod-mac-text { font-size: 18px; line-height: 1.6; margin-bottom: 16px; font-weight: 500; }
+        
+        /* Linux (Kernel Panic) */
+        .bsod-linux {
+            background-color: #000000;
+            color: #AAAAAA;
+            font-family: 'Roboto Mono', monospace;
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.2;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+        .linux-cursor { display: inline-block; width: 8px; height: 16px; background: #AAAAAA; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Android (系统崩溃弹窗) */
+        .bsod-android {
+            background-color: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Roboto, sans-serif;
+        }
+        .android-dialog {
+            background: #303030;
+            color: white;
+            width: 80%;
+            max-width: 320px;
+            padding: 24px;
+            border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .android-title { font-size: 20px; font-weight: 500; margin-bottom: 12px; }
+        .android-msg { font-size: 14px; color: #ccc; margin-bottom: 24px; line-height: 1.5; }
+        .android-btn { color: #A8C7FA; font-weight: 500; text-align: right; cursor: pointer; float: right; }
+
+        /* iOS (黑屏转圈) */
+        .bsod-ios {
+            background-color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .ios-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="background-pattern"></div>
+
+    <main class="alert-card">
+        <div class="lock-icon-container">
+            <span class="material-symbols-outlined">lock</span>
+        </div>
+
+        <h1>设备已被锁定</h1>
+        <div class="subtitle">案件编号：114-514-1919-810</div>
+        
+        <p style="font-size: 14px; margin-bottom: 24px; color: #4a4544;">
+            检测到您的设备浏览了<strong>大量违规内容</strong>。根据《互联网冲浪安全法》第114条，您的设备已被锁死，请立即缴纳罚款以解锁。
+        </p>
+
+        <div class="bill-details">
+            <div class="bill-row">
+                <span>基础罚金</span>
+                <span class="price-original">¥2500.00</span>
+            </div>
+            
+            <div class="bill-row">
+                <span><span class="subsidy-tag tag-national">国补</span>国家安全补贴</span>
+                <span class="discount-text">-¥500</span>
+            </div>
+            
+            <div class="bill-row">
+                <span><span class="subsidy-tag tag-province">省补</span>省心省力补贴</span>
+                <span class="discount-text">-¥500</span>
+            </div>
+
+            <div class="bill-row">
+                <span><span class="subsidy-tag tag-billions">百亿补贴</span>平台整改专享</span>
+                <span class="discount-text">-¥801</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="total-row">
+                <span class="total-label">实付金额</span>
+                <span class="total-price"><span>¥</span>699</span>
+            </div>
+        </div>
+
+        <button class="pay-btn" id="openDialog">
+            <span class="material-symbols-outlined">qr_code_scanner</span>
+            立即缴纳罚款
+        </button>
+
+        <div class="footer-text">
+            注意：不缴纳罚款将导致电脑永久播放《希望之花》。<br>
+            解释权归 114514 号网络安全中心所有。
+        </div>
+    </main>
+
+    <!-- 弹窗 -->
+    <dialog id="paymentDialog">
+        <h2>扫码认罚</h2>
+        <p style="color: #666; font-size: 14px;">请使用手机扫码支付</p>
+        
+        <!-- 使用 div 作为 QRCode.js 的容器 -->
+        <div id="qr-code-container"></div>
+        
+        <p style="font-size: 12px; color: #999;">支持 微信 / 支付宝 / 云闪付</p>
+        
+        <!-- 取消按钮 -->
+        <button class="close-btn" id="cancelBtn">取消</button>
+    </dialog>
+
+    <!-- 蓝屏/死机界面容器 (内容由 JS 动态生成) -->
+    <div id="bsod"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dialog = document.getElementById('paymentDialog');
+            const openBtn = document.getElementById('openDialog');
+            const cancelBtn = document.getElementById('cancelBtn'); 
+            const bsodLayer = document.getElementById('bsod');
+
+            // 初始化弹窗内的“你被耍了”二维码 (使用 QRCode.js)
+            new QRCode(document.getElementById("qr-code-container"), {
+                text: "你被耍了",
+                width: 200,
+                height: 200,
+                colorDark : "#BA1A1A", // 红色
+                colorLight : "#FFFFFF",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+
+            // 打开弹窗
+            openBtn.addEventListener('click', () => {
+                dialog.showModal();
+            });
+
+            // 点击“取消”按钮触发死机效果
+            cancelBtn.addEventListener('click', () => {
+                dialog.close();
+                toggleFullScreen();
+                triggerCrash();
+            });
+
+            // 点击弹窗外部关闭
+            dialog.addEventListener('click', (e) => {
+                const dialogDimensions = dialog.getBoundingClientRect();
+                if (
+                    e.clientX < dialogDimensions.left ||
+                    e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top ||
+                    e.clientY > dialogDimensions.bottom
+                ) {
+                    dialog.close();
+                }
+            });
+
+            // 全屏
+            function toggleFullScreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => {
+                        console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+                    });
+                }
+            }
+
+            // 获取操作系统
+            function getOS() {
+                const userAgent = window.navigator.userAgent;
+                const platform = window.navigator.platform;
+                const macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
+                const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+                const iosPlatforms = ['iPhone', 'iPad', 'iPod'];
+                let os = null;
+
+                if (macosPlatforms.indexOf(platform) !== -1) {
+                    os = 'macOS';
+                } else if (iosPlatforms.indexOf(platform) !== -1 || /iPhone|iPad|iPod/.test(userAgent)) {
+                    os = 'iOS';
+                } else if (windowsPlatforms.indexOf(platform) !== -1) {
+                    os = 'Windows';
+                    // 尝试简单的 Win10 vs Win11 检测逻辑
+                    // 注意：Web API 很难精确区分 Win10 和 Win11，默认 userAgent 都是 NT 10.0
+                    // 为了演示效果，我们这里简单随机一下，或者如果有 userAgentData 可以尝试更高级检测
+                    // 这里为了满足用户"Win11是黑屏"的需求，我们假设 50% 概率或者是通过某些特征
+                    // 但为了让用户体验到黑屏，我们这里可以默认优先展示黑屏(Win11风格)如果检测到是 Windows
+                    // 或者我们简单地写死一个逻辑：如果 UA 含有 Windows，则检查是否支持某些新特性，这里简化处理：
+                    // 随机返回 Win10 或 Win11，或者简单地默认 Win11 (黑屏) 因为更酷
+                    os = Math.random() > 0.5 ? 'Windows 11' : 'Windows 10'; 
+                } else if (/Android/.test(userAgent)) {
+                    os = 'Android';
+                } else if (!os && /Linux/.test(platform)) {
+                    os = 'Linux';
+                }
+
+                return os;
+            }
+
+            // 触发死机画面
+            function triggerCrash() {
+                const os = getOS();
+                bsodLayer.style.display = 'block'; // 或 flex，取决于样式
+                bsodLayer.innerHTML = ''; // 清空
+                bsodLayer.className = ''; // 重置 class
+
+                if (os === 'Windows 10') {
+                    renderWindowsBSOD(false); // Blue
+                } else if (os === 'Windows 11' || os === 'Windows') {
+                    renderWindowsBSOD(true); // Black
+                } else if (os === 'macOS') {
+                    renderMacOSPanic();
+                } else if (os === 'Linux') {
+                    renderLinuxPanic();
+                } else if (os === 'Android') {
+                    renderAndroidCrash();
+                } else if (os === 'iOS') {
+                    renderIOSCrash();
+                } else {
+                    // 默认回退到 Win11 黑屏
+                    renderWindowsBSOD(true);
+                }
+            }
+
+            // 渲染函数：Windows (Blue/Black)
+            function renderWindowsBSOD(isBlack) {
+                bsodLayer.classList.add(isBlack ? 'bsod-win11' : 'bsod-win10');
+                bsodLayer.innerHTML = `
+                    <div class="bsod-win-sad-face">:(</div>
+                    <div class="bsod-win-message">
+                        你的电脑遇到问题，需要重新启动。<br>
+                        我们只收集某些错误信息，然后你可以重新启动。
+                    </div>
+                    <div class="bsod-win-percent">
+                        <span id="bsod-percent">0</span>% 完成
+                    </div>
+                    <div class="bsod-win-details">
+                        <div id="bsod-qr-placeholder" class="bsod-win-qr"></div>
+                        <div class="info-text">
+                            <p style="margin: 0;">
+                                关于此问题的详细信息和可能的解决方法，请访问<br>
+                                https://www.windows.com/stopcode
+                            </p>
+                            <div class="stop-code" style="margin-top:10px; font-size:0.8rem;">
+                                如果是致电支持人员，请提供以下信息：<br>
+                                终止代码: CRITICAL_PROCESS_DIED
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // 生成二维码
+                new QRCode(document.getElementById("bsod-qr-placeholder"), {
+                    text: "https://www.bilibili.com/video/BV1GJ411x7h7",
+                    width: 100,
+                    height: 100,
+                    colorDark : isBlack ? "#000000" : "#00204a",
+                    colorLight : "#FFFFFF",
+                    correctLevel : QRCode.CorrectLevel.M
+                });
+
+                startProgress();
+            }
+
+            // 渲染函数：macOS
+            function renderMacOSPanic() {
+                bsodLayer.classList.add('bsod-mac');
+                bsodLayer.innerHTML = `
+                    <div class="bsod-mac-content">
+                        <span class="material-symbols-outlined bsod-mac-icon">power_settings_new</span>
+                        <div class="bsod-mac-text">
+                            You need to restart your computer. Hold down the Power button for several seconds or press the Restart button.
+                        </div>
+                        <div class="bsod-mac-text">
+                            您的电脑需要重新启动。请按住电源按钮几秒钟或按“重新启动”按钮。
+                        </div>
+                        <div class="bsod-mac-text">
+                            Veuillez redémarrer votre ordinateur. Maintenez la touche de démarrage enfoncée pendant plusieurs secondes ou bien appuyez sur le bouton de réinitialisation.
+                        </div>
+                        <div class="bsod-mac-text">
+                            コンピュータを再起動する必要があります。パワーボタンを数秒間押し続けるか、リセットボタンを押してください。
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 渲染函数：Linux
+            function renderLinuxPanic() {
+                bsodLayer.classList.add('bsod-linux');
+                bsodLayer.innerHTML = `
+                    <div>[    0.000000] Linux version 5.15.0-58-generic (buildd@lcy02-amd64-101) (gcc (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #64-Ubuntu SMP Thu Jan 5 11:43:13 UTC 2023</div>
+                    <div>[    0.000000] Command line: BOOT_IMAGE=/boot/vmlinuz-5.15.0-58-generic root=UUID=1a2b3c4d-5e6f-7g8h-9i0j-k1l2m3n4o5p6 ro quiet splash vt.handoff=7</div>
+                    <div>[    0.283192] Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)</div>
+                    <div>[    0.283254] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.15.0-58-generic #64-Ubuntu</div>
+                    <div>[    0.283301] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014</div>
+                    <div>[    0.283348] Call Trace:</div>
+                    <div>[    0.283389]  <TASK></div>
+                    <div>[    0.283432]  dump_stack_lvl+0x45/0x5e</div>
+                    <div>[    0.283478]  panic+0x11c/0x2fa</div>
+                    <div>[    0.283515]  mount_block_root+0x21c/0x2c0</div>
+                    <div>[    0.283561]  mount_root+0x3d/0x45</div>
+                    <div>[    0.283599]  prepare_namespace+0x13f/0x18e</div>
+                    <div>[    0.283642]  kernel_init_freeable+0x18a/0x1ce</div>
+                    <div>[    0.283691]  ? rest_init+0x100/0x100</div>
+                    <div>[    0.283731]  kernel_init+0x16/0x120</div>
+                    <div>[    0.283771]  ret_from_fork+0x22/0x30</div>
+                    <div>[    0.283812]  </TASK></div>
+                    <div>[    0.283884] Kernel Offset: 0x22000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)</div>
+                    <div>[    0.283945] ---[ end Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0) ]---</div>
+                    <div style="margin-top:10px;"><span class="linux-cursor"></span></div>
+                `;
+            }
+
+            // 渲染函数：Android
+            function renderAndroidCrash() {
+                bsodLayer.classList.add('bsod-android');
+                bsodLayer.innerHTML = `
+                    <div class="android-dialog">
+                        <div class="android-title">System UI isn't responding</div>
+                        <div class="android-msg">
+                            Process system has stopped responding to your interaction.
+                        </div>
+                        <div class="android-btn" onclick="location.reload()">Close app</div>
+                        <div class="android-btn" style="margin-right: 20px;">Wait</div>
+                    </div>
+                `;
+            }
+
+            // 渲染函数：iOS
+            function renderIOSCrash() {
+                bsodLayer.classList.add('bsod-ios');
+                bsodLayer.innerHTML = `<div class="ios-spinner"></div>`;
+            }
+
+            // 进度条动画 (仅用于 Windows)
+            function startProgress() {
+                const percentSpan = document.getElementById('bsod-percent');
+                if(!percentSpan) return;
+                
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.floor(Math.random() * 5); 
+                    if (progress >= 100) {
+                        progress = 100;
+                        clearInterval(interval);
+                    }
+                    percentSpan.innerText = progress;
+                }, 800);
+            }
+        });
+    </script>
+</body>
+</html>
