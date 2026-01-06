@@ -93,6 +93,8 @@
             justify-content: center;
             margin: 0 auto 20px;
             animation: shake 0.8s ease-in-out infinite;
+            cursor: pointer; /* 增加手型光标提示可点击 */
+            user-select: none;
         }
 
         .material-symbols-outlined {
@@ -401,6 +403,100 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        /* ------------------------
+           Debug Menu Styles
+           ------------------------ */
+        #debug-menu {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            color: #333;
+            width: 90%;
+            max-width: 340px;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            z-index: 1000000;
+            font-family: 'Noto Sans SC', sans-serif;
+            text-align: left;
+            border: 1px solid #eee;
+        }
+        #debug-menu h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--md-sys-color-primary);
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .debug-section {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        .debug-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .debug-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .debug-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+        .debug-btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .debug-btn {
+            background: #f0f0f0;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+            text-align: center;
+        }
+        .debug-btn:hover { background: #e0e0e0; }
+        .debug-btn.primary {
+            background: var(--md-sys-color-primary);
+            color: white;
+            width: 100%;
+        }
+        .debug-btn.close {
+            background: transparent;
+            color: #999;
+            font-size: 20px;
+            padding: 0;
+            width: auto;
+        }
+        .debug-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999999;
+        }
+
     </style>
 </head>
 <body>
@@ -408,7 +504,8 @@
     <div class="background-pattern"></div>
 
     <main class="alert-card">
-        <div class="lock-icon-container">
+        <!-- 锁头图标：连续点击5次触发Debug -->
+        <div class="lock-icon-container" id="lockTrigger">
             <span class="material-symbols-outlined">lock</span>
         </div>
 
@@ -476,22 +573,66 @@
     <!-- 蓝屏/死机界面容器 (内容由 JS 动态生成) -->
     <div id="bsod"></div>
 
+    <!-- Debug 菜单遮罩 -->
+    <div id="debugBackdrop" class="debug-backdrop"></div>
+
+    <!-- Debug 菜单 -->
+    <div id="debug-menu">
+        <h3>
+            <span>🛠️ 开发者后台</span>
+            <button class="debug-btn close" id="closeDebug">×</button>
+        </h3>
+        
+        <div class="debug-section">
+            <label class="debug-label">自定义弹窗二维码内容 (支付码)</label>
+            <input type="text" id="debugQrText" class="debug-input" value="你被耍了">
+            
+            <label class="debug-label">自定义蓝屏二维码内容 (RickRoll)</label>
+            <input type="text" id="debugBsodUrl" class="debug-input" value="https://www.bilibili.com/video/BV1GJ411x7h7">
+            
+            <button class="debug-btn primary" id="applyDebug">应用更改</button>
+        </div>
+
+        <div class="debug-section">
+            <label class="debug-label">强制预览死机界面</label>
+            <div class="debug-btn-grid">
+                <button class="debug-btn" data-os="win10">Windows 10</button>
+                <button class="debug-btn" data-os="win11">Windows 11</button>
+                <button class="debug-btn" data-os="mac">macOS</button>
+                <button class="debug-btn" data-os="linux">Linux</button>
+                <button class="debug-btn" data-os="android">Android</button>
+                <button class="debug-btn" data-os="ios">iOS</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const dialog = document.getElementById('paymentDialog');
             const openBtn = document.getElementById('openDialog');
             const cancelBtn = document.getElementById('cancelBtn'); 
             const bsodLayer = document.getElementById('bsod');
+            
+            // 变量存储当前二维码内容
+            let currentQrText = "你被耍了";
+            let currentBsodUrl = "https://www.bilibili.com/video/BV1GJ411x7h7";
 
-            // 初始化弹窗内的“你被耍了”二维码 (使用 QRCode.js)
-            new QRCode(document.getElementById("qr-code-container"), {
-                text: "你被耍了",
-                width: 200,
-                height: 200,
-                colorDark : "#BA1A1A", // 红色
-                colorLight : "#FFFFFF",
-                correctLevel : QRCode.CorrectLevel.H
-            });
+            // 初始化弹窗内的二维码函数
+            function renderMainQR() {
+                const container = document.getElementById("qr-code-container");
+                container.innerHTML = ''; // 清空旧的
+                new QRCode(container, {
+                    text: currentQrText,
+                    width: 200,
+                    height: 200,
+                    colorDark : "#BA1A1A", 
+                    colorLight : "#FFFFFF",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            }
+
+            // 初始渲染
+            renderMainQR();
 
             // 打开弹窗
             openBtn.addEventListener('click', () => {
@@ -502,7 +643,7 @@
             cancelBtn.addEventListener('click', () => {
                 dialog.close();
                 toggleFullScreen();
-                triggerCrash();
+                triggerCrash(); // 自动检测系统触发
             });
 
             // 点击弹窗外部关闭
@@ -541,50 +682,48 @@
                 } else if (iosPlatforms.indexOf(platform) !== -1 || /iPhone|iPad|iPod/.test(userAgent)) {
                     os = 'iOS';
                 } else if (windowsPlatforms.indexOf(platform) !== -1) {
-                    os = 'Windows';
-                    // 尝试简单的 Win10 vs Win11 检测逻辑
-                    // 注意：Web API 很难精确区分 Win10 和 Win11，默认 userAgent 都是 NT 10.0
-                    // 为了演示效果，我们这里简单随机一下，或者如果有 userAgentData 可以尝试更高级检测
-                    // 这里为了满足用户"Win11是黑屏"的需求，我们假设 50% 概率或者是通过某些特征
-                    // 但为了让用户体验到黑屏，我们这里可以默认优先展示黑屏(Win11风格)如果检测到是 Windows
-                    // 或者我们简单地写死一个逻辑：如果 UA 含有 Windows，则检查是否支持某些新特性，这里简化处理：
-                    // 随机返回 Win10 或 Win11，或者简单地默认 Win11 (黑屏) 因为更酷
                     os = Math.random() > 0.5 ? 'Windows 11' : 'Windows 10'; 
                 } else if (/Android/.test(userAgent)) {
                     os = 'Android';
                 } else if (!os && /Linux/.test(platform)) {
                     os = 'Linux';
                 }
-
-                return os;
+                return os || 'Windows 11';
             }
 
-            // 触发死机画面
+            // 触发死机画面 (自动)
             function triggerCrash() {
                 const os = getOS();
-                bsodLayer.style.display = 'block'; // 或 flex，取决于样式
-                bsodLayer.innerHTML = ''; // 清空
-                bsodLayer.className = ''; // 重置 class
+                triggerSpecificCrash(os);
+            }
 
-                if (os === 'Windows 10') {
-                    renderWindowsBSOD(false); // Blue
-                } else if (os === 'Windows 11' || os === 'Windows') {
-                    renderWindowsBSOD(true); // Black
-                } else if (os === 'macOS') {
+            // 触发特定死机画面
+            function triggerSpecificCrash(osType) {
+                bsodLayer.style.display = 'block'; 
+                bsodLayer.innerHTML = ''; 
+                bsodLayer.className = ''; 
+
+                if (osType === 'Windows 10' || osType === 'win10') {
+                    renderWindowsBSOD(false); 
+                } else if (osType === 'Windows 11' || osType === 'win11') {
+                    renderWindowsBSOD(true); 
+                } else if (osType === 'macOS' || osType === 'mac') {
                     renderMacOSPanic();
-                } else if (os === 'Linux') {
+                } else if (osType === 'Linux' || osType === 'linux') {
                     renderLinuxPanic();
-                } else if (os === 'Android') {
+                } else if (osType === 'Android' || osType === 'android') {
                     renderAndroidCrash();
-                } else if (os === 'iOS') {
+                } else if (osType === 'iOS' || osType === 'ios') {
                     renderIOSCrash();
                 } else {
-                    // 默认回退到 Win11 黑屏
                     renderWindowsBSOD(true);
                 }
             }
 
-            // 渲染函数：Windows (Blue/Black)
+            /* =========================================
+               渲染函数 (Windows, Mac, Linux, etc.)
+               ========================================= */
+
             function renderWindowsBSOD(isBlack) {
                 bsodLayer.classList.add(isBlack ? 'bsod-win11' : 'bsod-win10');
                 bsodLayer.innerHTML = `
@@ -611,9 +750,8 @@
                     </div>
                 `;
                 
-                // 生成二维码
                 new QRCode(document.getElementById("bsod-qr-placeholder"), {
-                    text: "https://www.bilibili.com/video/BV1GJ411x7h7",
+                    text: currentBsodUrl,
                     width: 100,
                     height: 100,
                     colorDark : isBlack ? "#000000" : "#00204a",
@@ -624,7 +762,6 @@
                 startProgress();
             }
 
-            // 渲染函数：macOS
             function renderMacOSPanic() {
                 bsodLayer.classList.add('bsod-mac');
                 bsodLayer.innerHTML = `
@@ -646,7 +783,6 @@
                 `;
             }
 
-            // 渲染函数：Linux
             function renderLinuxPanic() {
                 bsodLayer.classList.add('bsod-linux');
                 bsodLayer.innerHTML = `
@@ -673,7 +809,6 @@
                 `;
             }
 
-            // 渲染函数：Android
             function renderAndroidCrash() {
                 bsodLayer.classList.add('bsod-android');
                 bsodLayer.innerHTML = `
@@ -688,17 +823,14 @@
                 `;
             }
 
-            // 渲染函数：iOS
             function renderIOSCrash() {
                 bsodLayer.classList.add('bsod-ios');
                 bsodLayer.innerHTML = `<div class="ios-spinner"></div>`;
             }
 
-            // 进度条动画 (仅用于 Windows)
             function startProgress() {
                 const percentSpan = document.getElementById('bsod-percent');
                 if(!percentSpan) return;
-                
                 let progress = 0;
                 const interval = setInterval(() => {
                     progress += Math.floor(Math.random() * 5); 
@@ -709,6 +841,83 @@
                     percentSpan.innerText = progress;
                 }, 800);
             }
+
+
+            /* =========================================
+               Debug Menu Logic
+               ========================================= */
+            
+            const lockTrigger = document.getElementById('lockTrigger');
+            const debugMenu = document.getElementById('debug-menu');
+            const debugBackdrop = document.getElementById('debugBackdrop');
+            const closeDebug = document.getElementById('closeDebug');
+            const applyDebug = document.getElementById('applyDebug');
+            
+            let clickCount = 0;
+            let clickTimer;
+
+            // 1. 连续点击触发
+            lockTrigger.addEventListener('click', () => {
+                clickCount++;
+                
+                // 给点视觉反馈
+                lockTrigger.style.transform = 'scale(0.95)';
+                setTimeout(() => lockTrigger.style.transform = 'scale(1)', 100);
+
+                // 重置计时器
+                clearTimeout(clickTimer);
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 2000); // 2秒内没点够次数就重置
+
+                if (clickCount >= 5) {
+                    showDebugMenu();
+                    clickCount = 0;
+                }
+            });
+
+            function showDebugMenu() {
+                debugMenu.style.display = 'block';
+                debugBackdrop.style.display = 'block';
+            }
+
+            function hideDebugMenu() {
+                debugMenu.style.display = 'none';
+                debugBackdrop.style.display = 'none';
+            }
+
+            closeDebug.addEventListener('click', hideDebugMenu);
+            debugBackdrop.addEventListener('click', hideDebugMenu);
+
+            // 2. 应用更改 (修改二维码内容)
+            applyDebug.addEventListener('click', () => {
+                const newQrText = document.getElementById('debugQrText').value;
+                const newBsodUrl = document.getElementById('debugBsodUrl').value;
+                
+                if (newQrText) {
+                    currentQrText = newQrText;
+                    renderMainQR(); // 重新渲染主界面二维码
+                }
+                
+                if (newBsodUrl) {
+                    currentBsodUrl = newBsodUrl;
+                }
+                
+                alert('更改已应用！\n弹窗和死机界面的内容已更新。');
+            });
+
+            // 3. 强制预览死机界面
+            const debugBtns = document.querySelectorAll('.debug-btn[data-os]');
+            debugBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const osType = btn.getAttribute('data-os');
+                    hideDebugMenu();
+                    dialog.close(); // 如果弹窗开着，关掉
+                    toggleFullScreen(); // 尝试全屏
+                    triggerSpecificCrash(osType);
+                });
+            });
+
         });
     </script>
 </body>
